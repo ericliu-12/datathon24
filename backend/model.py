@@ -6,13 +6,14 @@ load_dotenv("./.env/pyvenv.cfg")
 
 # How to get your Databricks token: https://docs.databricks.com/en/dev-tools/auth/pat.html
 DATABRICKS_TOKEN = os.environ.get('DATABRICKS_TOKEN')
+DATABRICKS_HOST = os.environ.get('DATABRICKS_HOST')
 
 # Alternatively in a Databricks notebook you can use this:
 # DATABRICKS_TOKEN = dbutils.notebook.entry_point.getDbutils().notebook().getContext().apiToken().get()
 
 client = OpenAI(
     api_key=DATABRICKS_TOKEN,
-    base_url="https://dbc-821f5695-fa5e.cloud.databricks.com/serving-endpoints"
+    base_url=f"{DATABRICKS_HOST}/serving-endpoints"
 )
 
 response = client.chat.completions.create(
