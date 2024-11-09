@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface ConnectorProps {
   refA: React.RefObject<HTMLDivElement>;
@@ -7,6 +7,7 @@ interface ConnectorProps {
 
 export default function Connector({ refA, refB }: ConnectorProps) {
   const [path, setPath] = useState("");
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     const updatePath = () => {
@@ -14,16 +15,17 @@ export default function Connector({ refA, refB }: ConnectorProps) {
         const rectA = refA.current.getBoundingClientRect();
         const rectB = refB.current.getBoundingClientRect();
 
-        const startX = rectA.x + rectA.width / 2;
-        const startY = rectA.y + rectA.height / 2;
-        const endX = rectB.x + rectB.width / 2;
-        const endY = rectB.y + rectB.height / 2;
+        // Start and end coordinates centered vertically and horizontally on the elements
+        const startX = rectA.left + rectA.width / 2;
+        const startY = rectA.top + rectA.height / 2;
+        const endX = rectB.left + rectB.width / 2;
+        const endY = rectB.top + rectB.height / 2;
 
-        const controlX1 = startX + 150;
-        const controlY1 = startY - 150;
-
-        const controlX2 = endX - 150;
-        const controlY2 = endY + 150;
+        // Adjust control points closer to the start and end points
+        const controlX1 = startX + (endX - startX) / 3;
+        const controlY1 = startY;
+        const controlX2 = endX - (endX - startX) / 3;
+        const controlY2 = endY;
 
         setPath(
           `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`
@@ -31,27 +33,43 @@ export default function Connector({ refA, refB }: ConnectorProps) {
       }
     };
 
+    const debouncedUpdatePath = () => {
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      animationFrameId.current = requestAnimationFrame(updatePath);
+    };
+
     updatePath();
 
-    const observer = new MutationObserver(updatePath);
-    observer.observe(refA.current!, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
+    const observer = new MutationObserver(debouncedUpdatePath);
+    if (refA.current) {
+      observer.observe(refA.current, {
+        attributes: true,
+        attributeFilter: ["style", "class"],
+      });
+    }
+    if (refB.current) {
+      observer.observe(refB.current, {
+        attributes: true,
+        attributeFilter: ["style", "class"],
+      });
+    }
 
-    observer.observe(refB.current!, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
+    window.addEventListener("resize", debouncedUpdatePath);
 
-    return () => observer.disconnect();
+    return () => {
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      observer.disconnect();
+      window.removeEventListener("resize", debouncedUpdatePath);
+    };
   }, [refA, refB]);
 
   return (
-    <div>
-      <svg className="absolute pointer-events-none w-full h-screen -z-10">
-        <path d={path} className=" stroke-lime-500 fill-none stroke-2" />
-      </svg>
-    </div>
+    <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
+      <path d={path} stroke="black" strokeWidth="2" fill="none" />
+    </svg>
   );
 }
