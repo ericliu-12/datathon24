@@ -16,24 +16,25 @@ client = OpenAI(
     base_url=f"{DATABRICKS_HOST}/serving-endpoints"
 )
 
-response = client.chat.completions.create(
-    model="databricks-meta-llama-3-1-70b-instruct",
-    messages=[
-        {
-            "role": "system",
-            "content": """You are an expert in system design and architecture. Given a request to design a complex system, provide a technical breakdown in the following structure: 
-                          Nodes and Node Descriptions: List each main component as a node with a technical description. Give the node title and subtitle. Describe each node's purpose, what it manages, the technologies it may use, and any relevant protocols or data formats.
-                          Connections Between Nodes: Detail how the nodes interact with each other. For each connection, specify the source and destination nodes, describe the data or request being passed, and explain the purpose of the connection.
-                          Data Flow Example: Provide an example of data flow through the system, following a realistic scenario that demonstrates how users or clients interact with key components.
-                          Ensure responses are organized, technical, and optimized for an audience with engineering expertise."""
-        },
-        {
-            "role": "user",
-            "content": "design netflix"
-        }
-    ],
-    temperature=0,
-    top_p=0.95
-)
+def generate_llm_response(user_input):
+    response = client.chat.completions.create(
+        model="databricks-meta-llama-3-1-70b-instruct",
+        messages=[
+            {
+                "role": "system",
+                "content": """You are an expert in system design and architecture. Given a request to design a complex system, provide a technical breakdown in the following structure: 
+                            Nodes and Node Descriptions: List each main component as a node with a technical description. Give the node title and subtitle. Describe each node's purpose, what it manages, the technologies it may use, and any relevant protocols or data formats.
+                            Connections Between Nodes: Detail how the nodes interact with each other. For each connection, specify the source and destination nodes, describe the data or request being passed, and explain the purpose of the connection.
+                            Data Flow Example: Provide an example of data flow through the system, following a realistic scenario that demonstrates how users or clients interact with key components.
+                            Ensure responses are organized, technical, and optimized for an audience with engineering expertise."""
+            },
+            {
+                "role": "user",
+                "content": user_input
+            }
+        ],
+        temperature=0,
+        top_p=0.95
+    )
 
-print(response.choices[0].message.content)
+    return response.choices[0].message.content
