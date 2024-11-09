@@ -19,8 +19,7 @@ export default function Home() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [nodes, setNodes] = useState<Node[]>([]);
   const [connections, setConnections] = useState([]);
-  const refA = useRef<HTMLDivElement>(null);
-  const refB = useRef<HTMLDivElement>(null);
+  const nodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>({}); // Dynamic refs for each node
 
   const openModal = () => {
     setIsModalOpen(true);
@@ -61,14 +60,22 @@ export default function Home() {
         {nodes.map((node, index) => (
           <div
             key={node.id}
-            ref={index === 0 ? refA : index === 1 ? refB : null}
+            ref={(el) => (nodeRefs.current[node.id] = el)} // Assign ref to each node by its id
             style={{ position: "absolute", top: `${100 + index * 200}px`, left: "100px" }}
           >
             <Post title={node.title} sub={node.sub} id={node.id} openModal={openModal} />
           </div>
         ))}
         {isModalOpen && <Modal closeModal={closeModal} />}
-        {nodes.length >= 2 && <Connector refA={refA} refB={refB} />}
+        
+        {/* Render connectors for each connection */}
+        {connections.map((connection, index) => {
+          const refA = nodeRefs.current[connection.from];
+          const refB = nodeRefs.current[connection.to];
+          return refA && refB ? (
+            <Connector key={index} refA={refA} refB={refB} />
+          ) : null;
+        })}
       </div>
     </div>
   );

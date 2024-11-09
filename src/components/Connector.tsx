@@ -15,18 +15,19 @@ export default function Connector({ refA, refB }: ConnectorProps) {
         const rectA = refA.current.getBoundingClientRect();
         const rectB = refB.current.getBoundingClientRect();
 
-        // Start and end coordinates centered vertically and horizontally on the elements
+        // Center coordinates for each card
         const startX = rectA.left + rectA.width / 2;
         const startY = rectA.top + rectA.height / 2;
         const endX = rectB.left + rectB.width / 2;
         const endY = rectB.top + rectB.height / 2;
 
-        // Adjust control points closer to the start and end points
-        const controlX1 = startX + (endX - startX) / 3;
-        const controlY1 = startY;
-        const controlX2 = endX - (endX - startX) / 3;
-        const controlY2 = endY;
+        // Control points for a smooth curve
+        const controlX1 = startX + (endX - startX) / 2;
+        const controlY1 = startY; // Align control point vertically with start
+        const controlX2 = endX - (endX - startX) / 2;
+        const controlY2 = endY; // Align control point vertically with end
 
+        // Set the path to start and end at the centers of the cards
         setPath(
           `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`
         );
@@ -69,7 +70,7 @@ export default function Connector({ refA, refB }: ConnectorProps) {
 
   return (
     <svg style={{ position: "absolute", top: 0, left: 0, width: "100%", height: "100%", pointerEvents: "none" }}>
-      <path d={path} stroke="black" strokeWidth="2" fill="none" />
+      <path d={path} stroke="green" strokeWidth="2" fill="none" />
     </svg>
   );
 }
