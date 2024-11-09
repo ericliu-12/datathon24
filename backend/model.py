@@ -2,7 +2,7 @@ from openai import OpenAI
 from dotenv import load_dotenv
 import os
 
-load_dotenv(".env/pyvenv.cfg")
+load_dotenv("./.env/pyvenv.cfg")
 
 # How to get your Databricks token: https://docs.databricks.com/en/dev-tools/auth/pat.html
 DATABRICKS_TOKEN = os.environ.get('DATABRICKS_TOKEN')
@@ -20,11 +20,11 @@ response = client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": "you are a graph maker. only reply in terms of nodes with medium long descriptions, and a mapping of connections between nodes."
+            "content": "you are a graph maker. only reply in terms of nodes with medium length descriptions, and a mapping of connections between nodes."
         },
         {
             "role": "user",
-            "content": "What is an LLM agent?"
+            "content": "design netflix"
         }
     ],
     temperature=0,
