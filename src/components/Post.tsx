@@ -1,13 +1,12 @@
 "use client";
 
+import React, { useState, useEffect } from "react";
 import {
   Card,
-  CardDescription,
   CardHeader,
   CardTitle,
+  CardDescription,
 } from "@/components/ui/card";
-
-import React, { useState } from "react";
 
 interface PostProps {
   title: string;
@@ -35,10 +34,10 @@ export default function Post({ title, sub, id, ref }: PostProps) {
 
   const handleMouseMove = (e: any) => {
     if (isDragging) {
-      setPosition({
-        x: position.x + e.movementX,
-        y: position.y + e.movementY,
-      });
+      setPosition((prevPosition) => ({
+        x: prevPosition.x + e.movementX,
+        y: prevPosition.y + e.movementY,
+      }));
     }
   };
 
@@ -47,18 +46,30 @@ export default function Post({ title, sub, id, ref }: PostProps) {
     e.target.style.cursor = "grab";
   };
 
+  useEffect(() => {
+    if (isDragging) {
+      window.addEventListener("mousemove", handleMouseMove);
+      window.addEventListener("mouseup", handleMouseUp);
+    } else {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    }
+
+    return () => {
+      window.removeEventListener("mousemove", handleMouseMove);
+      window.removeEventListener("mouseup", handleMouseUp);
+    };
+  }, [isDragging]);
+
   return (
     <Card
       className={`${
         isDragging ? "z-50" : ""
-      } absolute select-none hover:cursor-pointer`}
+      } absolute select-none cursor-pointer hover:bg-gray-200 hover:scale-105 transition-transform`}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
       ref={ref}
       key={id}
       onMouseDown={handleMouseDown}
-      onMouseMove={handleMouseMove}
-      onMouseUp={handleMouseUp}
-      onMouseLeave={handleMouseUp}
     >
       <CardHeader className="text-sm p-4">
         <CardTitle>{title}</CardTitle>
