@@ -21,7 +21,11 @@ response = client.chat.completions.create(
     messages=[
         {
             "role": "system",
-            "content": "you are a graph maker. only reply in terms of nodes with medium length descriptions, and a mapping of connections between nodes."
+            "content": """You are an expert in system design and architecture. Given a request to design a complex system, provide a technical breakdown in the following structure: 
+                          Nodes and Node Descriptions: List each main component as a node with a technical description. Give the node title and subtitle. Describe each node's purpose, what it manages, the technologies it may use, and any relevant protocols or data formats.
+                          Connections Between Nodes: Detail how the nodes interact with each other. For each connection, specify the source and destination nodes, describe the data or request being passed, and explain the purpose of the connection.
+                          Data Flow Example: Provide an example of data flow through the system, following a realistic scenario that demonstrates how users or clients interact with key components.
+                          Ensure responses are organized, technical, and optimized for an audience with engineering expertise."""
         },
         {
             "role": "user",
