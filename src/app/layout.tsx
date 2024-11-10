@@ -34,7 +34,7 @@ export default function RootLayout({
         <SessionProviderWrapper>
           <SidebarProvider>
             <AppSidebar />
-            <img src="nexus.svg" alt="nexus_logo" className="absolute top-0 ml-[14%] mt-2 z-10 drop-shadow-xl" />
+            <img src="nexus.svg" alt="nexus_logo" className="fixed top-0 ml-[13vw] mt-2 z-10 drop-shadow-xl" />
             {/* <SidebarTrigger /> */}
             {children}
           </SidebarProvider>

@@ -275,7 +275,7 @@ export default function Graph({
         </Dialog>
       ))}
 
-      {connections.map(({ source, destination, label, description }, index) =>
+      {/* {connections.map(({ source, destination, label, description }, index) =>
         nodeRefs.current[source] && nodeRefs.current[destination] ? (
           <Connector
             key={index}
@@ -289,7 +289,7 @@ export default function Graph({
             onDescChange={(newDesc: string) => handleDescChange(index, newDesc)}
           />
         ) : null
-      )}
+      )} */}
     </div>
   );
 }
