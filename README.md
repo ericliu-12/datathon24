@@ -1,36 +1,33 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Nexus
 
-## Getting Started
+## Inspiration
+System design is crucial for building reliable, scalable architectures, yet it can be challenging to visualize complex systems effectively. We created **Nexus** to provide an intuitive, interactive network visualization tool for users at all experience levels—whether it's students preparing for system design interviews or senior engineers developing architectures for companies and startups.
 
-First, run the development server:
+## What it Does
+Nexus enables users to visualize and explore system design workflows. Users can create **mind maps** representing components, data flow, and connections within a system. By leveraging AI-driven insights, Nexus helps users break down and structure system designs, making it easy to understand how data flows between nodes.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+## How We Built It
+We built Nexus using a combination of cutting-edge tools and frameworks:
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+- **Databricks**: For data processing and integration with machine learning workflows.
+- **MosaicML and Meta Llama**: Powering AI-driven responses to generate system designs.
+- **LangChain**: For chaining responses from different models and streamlining output into structured workflows.
+- **MongoDB**: For storing users’ design history, allowing them to revisit previous designs.
+- **NextAuth**: For secure user authentication.
+- **React and Tailwind CSS**: To create a responsive and visually appealing user interface, enabling clear visualization of nodes and data flows.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Challenges We Ran Into
+One of the biggest challenges was **integrating multiple AI models** seamlessly with LangChain. Ensuring the generated designs were both structured and intuitive required significant tweaking of prompts and response chaining. Additionally, creating a smooth, user-friendly experience for handling complex system designs was technically demanding.
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Accomplishments that We're Proud Of
+We’re proud to have developed a tool that not only helps visualize complex workflows but also leverages AI to generate and structure system designs dynamically. Our seamless integration of Databricks and LangChain for multi-model response handling, along with a user-friendly interface, represents a significant accomplishment.
 
-## Learn More
+## What We Learned
+Through this project, we deepened our understanding of integrating multiple machine learning models, optimizing prompt engineering, and enhancing user experiences with interactive, data-driven visualizations. We also gained experience in **scalable back-end design and database management** to support a history feature.
 
-To learn more about Next.js, take a look at the following resources:
+## What's Next for Nexus
+Moving forward, we plan to add new features, including:
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- **Multiplayer collaboration**: Allowing multiple users to collaborate on system designs in real-time.
+- **Enhanced AI insights**: Providing deeper analysis and optimization suggestions for designs.
+- **Export and share options**: Enabling users to easily export and share their designs.
