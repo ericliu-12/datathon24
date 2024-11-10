@@ -23,7 +23,10 @@ const TypingPlaceholder = () => {
     if (!isDeleting) {
       // Typing effect
       if (text.length < currentText.length) {
-        timeout = setTimeout(() => setText(currentText.slice(0, text.length + 1)), typingSpeed);
+        timeout = setTimeout(
+          () => setText(currentText.slice(0, text.length + 1)),
+          typingSpeed
+        );
       } else {
         // Start deleting after a delay when typing is complete
         timeout = setTimeout(() => setIsDeleting(true), delayBetweenLoops);
@@ -31,7 +34,10 @@ const TypingPlaceholder = () => {
     } else {
       // Deleting effect
       if (text.length > 0) {
-        timeout = setTimeout(() => setText(currentText.slice(0, text.length - 1)), deletingSpeed);
+        timeout = setTimeout(
+          () => setText(currentText.slice(0, text.length - 1)),
+          deletingSpeed
+        );
       } else {
         // Move to the next text after deleting is complete
         setIsDeleting(false);
@@ -42,14 +48,36 @@ const TypingPlaceholder = () => {
     return () => clearTimeout(timeout);
   }, [text, isDeleting, loopIndex]);
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    console.log("Submitted:", inputValue);
+
+    try {
+      const response = await fetch("/api/generate", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ userInput: inputValue }),
+      });
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch");
+      }
+
+      const data = await response.json();
+      console.log(data);
+    } catch (error) {
+      console.error("Error:", error);
+    }
+
     setInputValue("");
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex items-center border rounded p-2 fixed top-4 left-4 right-4 bg-white shadow-lg">
+    <form
+      onSubmit={handleSubmit}
+      className="flex items-center border rounded p-2 fixed top-4 left-4 right-4 bg-white shadow-lg"
+    >
       <input
         type="text"
         placeholder={text}
@@ -57,8 +85,8 @@ const TypingPlaceholder = () => {
         onChange={(e) => setInputValue(e.target.value)}
         className="flex-grow p-2 border-none outline-none"
       />
-      <button type="submit" className="ml-2 p-2 bg-blue-500 text-white rounded">
-        ➤
+      <button type="submit" className="ml-2 p-2 bg-blue-300 text-white rounded">
+        Search
       </button>
     </form>
   );

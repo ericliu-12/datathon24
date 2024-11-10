@@ -1,9 +1,8 @@
-export default async function POST(req: any, res: any) {
-  if (req.method !== "POST") {
-    return res.status(405).json({ message: "Only POST requests allowed" });
-  }
+import { NextResponse } from "next/server";
 
-  const { userInput } = req.body;
+export async function POST(request: Request) {
+  const data = await request.json();
+  const userInput = data.userInput;
 
   const response = await fetch("http://127.0.0.1:5000/generate", {
     method: "POST",
@@ -13,6 +12,10 @@ export default async function POST(req: any, res: any) {
     body: JSON.stringify({ userInput }),
   });
 
-  const data = await response.json();
-  res.status(200).json(data);
+  if (response.ok) {
+    const data = await response.json();
+    return NextResponse.json(data);
+  } else {
+    console.error("Failed to fetch:", response.status, response.statusText);
+  }
 }
