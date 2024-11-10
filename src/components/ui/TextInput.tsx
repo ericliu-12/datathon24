@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
 
 const placeholderTexts = [
-  "Show me how to design Netflix",
-  "Help me design my startup's systems",
-  "Create your project workflow",
-  "How can I help you today?",
+  "show me how to design Netflix",
+  "help me design my startup's system design",
+  "create your project workflow",
+  "how can I help you today?",
 ];
 
 const TypingPlaceholder = () => {
@@ -76,17 +76,17 @@ const TypingPlaceholder = () => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex items-center border rounded p-2 fixed top-4 left-4 right-4 bg-white shadow-lg"
+      className="flex flex-row justify-center items-center border border-black rounded-3xl p-2 bg-white shadow-lg w-[35vw] fixed top-[95%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     >
       <input
         type="text"
         placeholder={text}
         value={inputValue}
         onChange={(e) => setInputValue(e.target.value)}
-        className="flex-grow p-2 border-none outline-none"
+        className="flex-grow pl-3 text-lg border-none outline-none h-6 leading-none tracking-normal"
       />
-      <button type="submit" className="ml-2 p-2 bg-blue-300 text-white rounded">
-        Search
+      <button type="submit" className="ml-2 p-2 bg-lime-500 text-white rounded-full h-full">
+        <img src="submit_arrow.svg" alt="submit_arrow" />
       </button>
     </form>
   );
