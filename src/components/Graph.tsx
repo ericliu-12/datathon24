@@ -12,6 +12,8 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+// import { signIn } from "next-auth/react";
+import AuthButton from "./AuthButton";
 
 const initialPosts = [
   { title: "Digital Risography", sub: "Insights into blend modes" },
@@ -40,7 +42,7 @@ export default function Graph() {
   const mouseDownTime = useRef(0);
 
   const addNode = () => {
-    const newPost = { title: "New Node", sub: "Click to edit" };
+    const newPost = { title: "New Node", sub: "Double click to edit" };
     setPosts([...posts, newPost]);
     setOpenDialogs([...openDialogs, false]);
     setIsEditing([...isEditing, { title: false, sub: false }]);
@@ -129,7 +131,9 @@ export default function Graph() {
   };
 
   return (
-    <div className="relative min-h-screen">
+    <div className="relative flex-grow">
+      {/* <Button onClick={() => signIn("google")}></Button> */}
+      <AuthButton />
       <Button onClick={addNode} className="fixed top-24 right-4">
         <Plus className="mr-2" /> Add Node
       </Button>
@@ -145,7 +149,6 @@ export default function Graph() {
             onMouseMove={handleNodeMouseMove}
             onMouseUp={() => handleNodeMouseUp(index)}
             onDoubleClick={(e) => handleDoubleClick(index, e)}
-            className={connectingFrom === index ? "ring-2 ring-lime-500" : ""}
           >
             <Post
               {...post}

@@ -7,12 +7,7 @@ interface ConnectorProps {
   onLabelChange: (newLabel: string) => void;
 }
 
-export default function Connector({
-  refA,
-  refB,
-  label,
-  onLabelChange,
-}: ConnectorProps) {
+export default function Connector({ refA, refB }: ConnectorProps) {
   const [path, setPath] = useState("");
   const animationFrameId = useRef<number | null>(null);
 
@@ -75,23 +70,25 @@ export default function Connector({
     };
   }, [refA, refB]);
 
-  const handleLabelClick = () => setIsEditing(true);
-  const handleLabelChange = (e: React.ChangeEvent<HTMLInputElement>) =>
-    onLabelChange(e.target.value);
-  const handleBlur = () => setIsEditing(false);
-
   return (
     <svg
       style={{
         position: "absolute",
-        top: 0,
-        left: 0,
         width: "100%",
         height: "100%",
         pointerEvents: "none",
+        zIndex: -1,
       }}
     >
-      <path d={path} stroke="green" strokeWidth="2" fill="none" />
+      <path
+        d={path}
+        className="stroke-lime-500"
+        strokeWidth="2"
+        fill="none"
+        style={{
+          transform: "translateY(-6rem)",
+        }}
+      />
     </svg>
   );
 }

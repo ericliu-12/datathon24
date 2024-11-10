@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import SessionProviderWrapper from "@/components/SessionProviderWrapper";
 
 const sfProSans = localFont({
   src: "./fonts/sf-pro-text-heavy.woff",
@@ -28,7 +29,7 @@ export default function RootLayout({
       <body
         // className={`${sfProSans.variable} ${sfProMono.variable} antialiased`}
       >
-        {children}
+        <SessionProviderWrapper>{children}</SessionProviderWrapper>
       </body>
     </html>
   );
