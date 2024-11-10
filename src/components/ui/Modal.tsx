@@ -20,8 +20,8 @@ const Modal = ({ closeModal }: ModalProps) => {
         <DialogHeader>
           <DialogTitle>Are you absolutely sure?</DialogTitle>
           <DialogDescription>
-            This action cannot be undone. This will permanently delete your account
-            and remove your data from our servers.
+            This action cannot be undone. This will permanently delete your
+            account and remove your data from our servers.
           </DialogDescription>
         </DialogHeader>
       </DialogContent>
@@ -34,7 +34,10 @@ interface SidebarProps {
   onCreateConnection: () => void;
 }
 
-export default function Sidebar({ onCreateNode, onCreateConnection }: SidebarProps) {
+export default function Sidebar({
+  onCreateNode,
+  onCreateConnection,
+}: SidebarProps) {
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {

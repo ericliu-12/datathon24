@@ -30,8 +30,8 @@ export default function Post({
   handleDelete,
 }: PostProps) {
   const [position, setPosition] = useState<Position>({
-    x: Math.random() * (window.innerWidth * 0.75),
-    y: Math.random() * (window.innerHeight * 0.75),
+    x: Math.random() * (window.innerWidth - 450) + 50,
+    y: Math.random() * (window.innerHeight - 250) - 80,
   });
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
