@@ -6,6 +6,12 @@ import {
   PopoverContent,
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
+import {
+  Select,
+  SelectTrigger,
+  SelectContent,
+  SelectItem,
+} from "@/components/ui/select";
 
 export default function AuthButton() {
   const { data: session } = useSession();
@@ -36,13 +42,16 @@ export default function AuthButton() {
         onOpenAutoFocus={(event) => event.preventDefault()}
       >
         <div className="flex flex-col">
-          <Button
-            variant="ghost"
-            className="w-full text-left px-4 py-2" // Add padding to individual buttons if needed
-            onClick={() => {}}
-          >
-            Settings
-          </Button>
+          <Select>
+            <SelectTrigger className="w-full text-left px-4 py-2">
+              <span>Settings</span>
+            </SelectTrigger>
+            <SelectContent>
+              <SelectItem value="profile">Profile</SelectItem>
+              <SelectItem value="preferences">Preferences</SelectItem>
+              <SelectItem value="notifications">Notifications</SelectItem>
+            </SelectContent>
+          </Select>
           <Button
             variant="ghost"
             className="w-full text-left px-4 py-2"

@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Graph, { Connection, Node } from "@/components/Graph";
 import TypingPlaceholder from "@/components/TextInput";
+import VerticalCarousel from "@/components/VerticalCarousel";
 
 type DataFlow = {
   scenario?: string;
@@ -65,6 +66,9 @@ export default function Home() {
           setConnections={setConnections}
           deleteNode={handleDeleteNode}
         />
+      </div>
+      <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
+        <VerticalCarousel />
       </div>
     </div>
   );
