@@ -15,6 +15,7 @@ interface PostProps {
   id: number;
   ref: any;
   handleDelete: any;
+  forceHover?: boolean;
 }
 
 type Position = {
@@ -28,6 +29,7 @@ export default function Post({
   id,
   ref,
   handleDelete,
+  forceHover = false,
 }: PostProps) {
   const [position, setPosition] = useState<Position>({
     x: Math.random() * (window.innerWidth - 450) + 50,
@@ -74,7 +76,9 @@ export default function Post({
     <Card
       className={`${
         isDragging ? "z-50" : ""
-      } absolute select-none cursor-pointer hover:bg-gray-100 hover:scale-105 transition-transform w-52`}
+      } absolute select-none cursor-pointer ${
+        isHovered || forceHover ? "bg-gray-100 scale-105" : ""
+      } transition-transform w-52`}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
       ref={ref}
       key={id}
@@ -85,7 +89,7 @@ export default function Post({
       <CardHeader className="text-sm p-4">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{subtitle}</CardDescription>
-        {isHovered && (
+        {(isHovered || forceHover) && (
           <button
             className="absolute right-2 top-0 text-red-500 hover:text-red-700"
             onClick={() => handleDelete(id)}
