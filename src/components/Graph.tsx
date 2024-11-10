@@ -122,7 +122,7 @@ export default function Graph({
           {
             source: connectingFrom,
             destination: index,
-            label: "Click to edit",
+            label: "",
           },
         ]);
       }
@@ -264,7 +264,9 @@ export default function Graph({
             refA={nodeRefs.current[source]}
             refB={nodeRefs.current[destination]}
             label={label}
-            onLabelChange={(newLabel) => handleLabelChange(index, newLabel)}
+            onLabelChange={(newLabel: string) =>
+              handleLabelChange(index, newLabel)
+            }
           />
         ) : null
       )}
