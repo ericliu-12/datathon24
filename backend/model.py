@@ -13,7 +13,7 @@ chat_model = ChatDatabricks(
     base_url=f"{DATABRICKS_HOST}/serving-endpoints",
     endpoint="databricks-meta-llama-3-1-70b-instruct",
     temperature=0.1,
-    max_tokens=250,
+    # max_tokens=150,
 )
 
 keyword_prompt = ChatPromptTemplate.from_messages(
@@ -31,41 +31,57 @@ keyword_prompt = ChatPromptTemplate.from_messages(
     ]
 )
 
-# Chain the first prompt with the chat model
-keyword_chain = keyword_prompt | chat_model
-
-# Step 2: Run the first chain to extract the project name and keywords
-initial_prompt = "Design Netflix"
-keyword_response = keyword_chain.invoke({"prompt": initial_prompt})
-
-# Parse the response to extract project name and keywords from the JSON-style response
-project_data = eval(keyword_response.content)  # Assuming response content is a JSON-like string
-project_name = list(project_data.keys())[0]
-keywords = project_data[project_name]
-
 # Step 3: Set up the second ChatPromptTemplate for system design breakdown
 node_prompt = ChatPromptTemplate.from_messages(
     [
         (
             "system",
             """You are an expert in system design and architecture. Given a request to design a complex system based on the following information:
+               One of the nodes should be the user.
                Project Name: {project_name}
                Keywords: {keywords}
-               Provide a technical breakdown in the following structure: 
-               - Nodes and Node Descriptions: List each main component as a node with a technical description. Give the node title and subtitle. Describe each node's purpose, what it manages, the technologies it may use, and any relevant protocols or data formats.
-               - Connections Between Nodes: Detail how the nodes interact with each other. For each connection, specify the source and destination nodes, describe the data or request being passed, and explain the purpose of the connection.
-               - Data Flow Example: Provide an example of data flow through the system, following a realistic scenario that demonstrates how users or clients interact with key components.
+               Do not add any intro or outro statements. Provide a technical breakdown in the following structure: 
+               Nodes: {{
+                        id: number;
+                        title: string;
+                        subtitle: string;
+                        description: string;
+                        technologies: string[];
+                        protocols: string[];
+                        }};
+               Connections: type Connection = {{
+                        source: number; --> source node id
+                        destination: number; --> destination node id
+                        label: string;
+                        description: string;
+                        }};
+                Flow: {{
+                        scenario: string;
+                        steps: {{ action: string; node: string }}[];
+                    }};
                Ensure responses are organized, technical, and optimized for an audience with engineering expertise. Make sure the answer you return is only in JSON format."""
         ),
         ("user", "Please generate a system design breakdown.")
     ]
 )
 
+# Chain the first prompt with the chat model
+keyword_chain = keyword_prompt | chat_model
+
 # Chain the second prompt with the chat model
 node_chain = node_prompt | chat_model
 
-# Step 4: Run the second chain to get the system design breakdown
-node_response = node_chain.invoke({"project_name": project_name, "keywords": keywords})
+# function
+def generate_llm_response(user_input):
 
-# Print the final system design output
-print(node_response.content)
+    keyword_response = keyword_chain.invoke({"prompt": user_input})
+
+    # Parse the response to extract project name and keywords from the JSON-style response
+    project_data = eval(keyword_response.content)  # Assuming response content is a JSON-like string
+    project_name = list(project_data.keys())[0]
+    keywords = project_data[project_name]
+
+    # Step 4: Run the second chain to get the system design breakdown
+    node_response = node_chain.invoke({"project_name": project_name, "keywords": keywords})
+
+    return node_response.content.replace("```", "").strip()

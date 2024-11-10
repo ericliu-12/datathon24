@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import Post from "@/components/Post";
 import Connector from "./Connector";
 import {
@@ -15,116 +15,179 @@ import { Plus } from "lucide-react";
 // import { signIn } from "next-auth/react";
 import AuthButton from "./AuthButton";
 
-const initialPosts = [
-  { title: "Digital Risography", sub: "Insights into blend modes" },
-  { title: "Figma Basics", sub: "Design with me" },
-];
+export type Node = {
+  id: number;
+  title: string;
+  subtitle: string;
+  description?: string;
+  technologies?: string[];
+  protocols?: string[];
+};
 
-const createRefs = (count) =>
-  Array(count)
-    .fill(null)
-    .map(() => ({ current: null }));
+export type Connection = {
+  source: number;
+  destination: number;
+  label: string;
+  description?: string;
+};
 
-export default function Graph() {
-  const [posts, setPosts] = useState(initialPosts);
+interface GraphProps {
+  posts: Node[];
+  setPosts: React.Dispatch<React.SetStateAction<Node[]>>;
+  connections: Connection[];
+  setConnections: React.Dispatch<React.SetStateAction<Connection[]>>;
+}
+
+export default function Graph({
+  posts,
+  setPosts,
+  connections,
+  setConnections,
+}: GraphProps) {
   const [openDialogs, setOpenDialogs] = useState(
-    new Array(initialPosts.length).fill(false)
+    new Array(posts.length).fill(false)
   );
   const [isEditing, setIsEditing] = useState(
-    new Array(initialPosts.length).fill({ title: false, sub: false })
+    new Array(posts.length).fill({ title: false, sub: false })
   );
-  const [nodeRefs, setNodeRefs] = useState(createRefs(initialPosts.length));
-  const [connections, setConnections] = useState<
-    Array<{ from: number; to: number; label: string }>
-  >([]);
+  const nodeRefs = useRef<(HTMLDivElement | null)[]>(
+    new Array(posts.length).fill(null)
+  );
   const [connectingFrom, setConnectingFrom] = useState<number | null>(null);
   const isDragging = useRef(false);
   const mouseDownTime = useRef(0);
 
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  useEffect(() => {
+    if (posts.length && connections.length) {
+      setShouldUpdate(true);
+    }
+  }, [posts, connections]);
+
+  useEffect(() => {
+    if (shouldUpdate) {
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
+
+  useEffect(() => {
+    nodeRefs.current = nodeRefs.current.slice(0, posts.length);
+  }, [posts.length]);
+
+  useEffect(() => {
+    console.log(posts);
+  }, [posts]);
+
+  useEffect(() => {
+    console.log(nodeRefs);
+  }, [nodeRefs]);
+
+  useEffect(() => {
+    console.log(connections);
+  }, [connections]);
+
   const addNode = () => {
-    const newPost = { title: "New Node", sub: "Double click to edit" };
+    const newPost = {
+      id: posts.length,
+      title: "New Node",
+      subtitle: "Double click to edit",
+    };
     setPosts([...posts, newPost]);
     setOpenDialogs([...openDialogs, false]);
     setIsEditing([...isEditing, { title: false, sub: false }]);
-    setNodeRefs([...nodeRefs, { current: null }]);
   };
 
-  const handleNodeMouseDown = (e) => {
+  const handleNodeMouseDown = (e: any) => {
     isDragging.current = false;
     mouseDownTime.current = Date.now();
   };
 
-  const handleNodeMouseMove = (e) => {
+  const handleNodeMouseMove = (e: any) => {
     if (Date.now() - mouseDownTime.current > 100) {
       isDragging.current = true;
     }
   };
 
-  const handleNodeMouseUp = (index) => {
+  const handleNodeMouseUp = (index: any) => {
     if (!isDragging.current) {
       handleNodeClick(index);
+    } else {
+      setConnectingFrom(null);
     }
     isDragging.current = false;
   };
 
-  const handleNodeClick = (index) => {
+  const handleNodeClick = (index: any) => {
     if (connectingFrom === null) {
       setConnectingFrom(index);
     } else if (connectingFrom !== index) {
-      setConnections([
-        ...connections,
-        { from: connectingFrom, to: index, label: "Click to edit" },
-      ]);
+      const connectionExists = connections.some(
+        (connection) =>
+          connection.source === connectingFrom &&
+          connection.destination === index
+      );
+      if (!connectionExists) {
+        setConnections([
+          ...connections,
+          {
+            source: connectingFrom,
+            destination: index,
+            label: "Click to edit",
+          },
+        ]);
+      }
+
       setConnectingFrom(null);
     } else {
       setConnectingFrom(null);
     }
   };
 
-  const handleDoubleClick = (index, e) => {
+  const handleDoubleClick = (index: any, e: any) => {
     e.stopPropagation();
     const newOpenDialogs = [...openDialogs];
     newOpenDialogs[index] = true;
     setOpenDialogs(newOpenDialogs);
   };
 
-  const handleDialogClose = (index) => {
+  const handleDialogClose = (index: any) => {
     const newOpenDialogs = [...openDialogs];
     newOpenDialogs[index] = false;
     setOpenDialogs(newOpenDialogs);
   };
 
-  const handleTitleClick = (index) => {
+  const handleTitleClick = (index: any) => {
     const newIsEditing = [...isEditing];
     newIsEditing[index] = { ...newIsEditing[index], title: true };
     setIsEditing(newIsEditing);
   };
 
-  const handleSubtitleClick = (index) => {
+  const handleSubtitleClick = (index: any) => {
     const newIsEditing = [...isEditing];
     newIsEditing[index] = { ...newIsEditing[index], sub: true };
     setIsEditing(newIsEditing);
   };
 
-  const handleTitleChange = (index, newTitle) => {
+  const handleTitleChange = (index: any, newTitle: any) => {
     const updatedPosts = [...posts];
     updatedPosts[index].title = newTitle;
     setPosts(updatedPosts);
   };
 
-  const handleSubtitleChange = (index, newSubtitle) => {
+  const handleSubtitleChange = (index: any, newSubtitle: any) => {
     const updatedPosts = [...posts];
-    updatedPosts[index].sub = newSubtitle;
+    updatedPosts[index].subtitle = newSubtitle;
     setPosts(updatedPosts);
   };
 
-  const handleConfirmChanges = (index) => {
+  const handleConfirmChanges = (index: any) => {
     const newIsEditing = [...isEditing];
     newIsEditing[index] = { title: false, sub: false };
     setIsEditing(newIsEditing);
   };
 
-  const handleLabelChange = (index, newLabel) => {
+  const handleLabelChange = (index: any, newLabel: any) => {
     const updatedConnections = [...connections];
     updatedConnections[index].label = newLabel;
     setConnections(updatedConnections);
@@ -150,10 +213,11 @@ export default function Graph() {
             onDoubleClick={(e) => handleDoubleClick(index, e)}
           >
             <Post
-              {...post}
-              id={index}
-              ref={(el) => {
-                nodeRefs[index].current = el;
+              id={post.id}
+              title={post.title}
+              subtitle={post.subtitle}
+              ref={(el: HTMLDivElement) => {
+                nodeRefs.current[index] = el;
               }}
             />
           </div>
@@ -178,7 +242,7 @@ export default function Graph() {
                 {isEditing[index]?.sub ? (
                   <input
                     type="text"
-                    value={post.sub}
+                    value={post.subtitle}
                     onChange={(e) =>
                       handleSubtitleChange(index, e.target.value)
                     }
@@ -187,7 +251,7 @@ export default function Graph() {
                   />
                 ) : (
                   <span onClick={() => handleSubtitleClick(index)}>
-                    {post.sub}
+                    {post.subtitle}
                   </span>
                 )}
               </DialogDescription>
@@ -196,12 +260,12 @@ export default function Graph() {
         </Dialog>
       ))}
 
-      {connections.map(({ from, to, label }, index) =>
-        nodeRefs[from]?.current && nodeRefs[to]?.current ? (
+      {connections.map(({ source, destination, label }, index) =>
+        nodeRefs.current[source] && nodeRefs.current[destination] ? (
           <Connector
             key={index}
-            refA={nodeRefs[from]}
-            refB={nodeRefs[to]}
+            refA={nodeRefs.current[source]}
+            refB={nodeRefs.current[destination]}
             label={label}
             onLabelChange={(newLabel) => handleLabelChange(index, newLabel)}
           />

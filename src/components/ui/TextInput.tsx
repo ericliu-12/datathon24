@@ -7,7 +7,12 @@ const placeholderTexts = [
   "how can I help you today?",
 ];
 
-const TypingPlaceholder = () => {
+interface SearchProps {
+  response: any;
+  setResponse: any;
+}
+
+const TypingPlaceholder = ({ response, setResponse }: SearchProps) => {
   const [text, setText] = useState("");
   const [isDeleting, setIsDeleting] = useState(false);
   const [loopIndex, setLoopIndex] = useState(0);
@@ -65,7 +70,7 @@ const TypingPlaceholder = () => {
       }
 
       const data = await response.json();
-      console.log(data);
+      setResponse(data);
     } catch (error) {
       console.error("Error:", error);
     }

@@ -1,8 +1,8 @@
 import { useEffect, useState, useRef } from "react";
 
 interface ConnectorProps {
-  refA: React.RefObject<HTMLDivElement>;
-  refB: React.RefObject<HTMLDivElement>;
+  refA: HTMLDivElement;
+  refB: HTMLDivElement;
   label: string;
   onLabelChange: (newLabel: string) => void;
 }
@@ -13,9 +13,9 @@ export default function Connector({ refA, refB }: ConnectorProps) {
 
   useEffect(() => {
     const updatePath = () => {
-      if (refA.current && refB.current) {
-        const rectA = refA.current.getBoundingClientRect();
-        const rectB = refB.current.getBoundingClientRect();
+      if (refA && refB) {
+        const rectA = refA.getBoundingClientRect();
+        const rectB = refB.getBoundingClientRect();
 
         // Center coordinates for each card
         const startX = rectA.left + rectA.width / 2;
@@ -46,14 +46,14 @@ export default function Connector({ refA, refB }: ConnectorProps) {
     updatePath();
 
     const observer = new MutationObserver(debouncedUpdatePath);
-    if (refA.current) {
-      observer.observe(refA.current, {
+    if (refA) {
+      observer.observe(refA, {
         attributes: true,
         attributeFilter: ["style", "class"],
       });
     }
-    if (refB.current) {
-      observer.observe(refB.current, {
+    if (refB) {
+      observer.observe(refB, {
         attributes: true,
         attributeFilter: ["style", "class"],
       });
