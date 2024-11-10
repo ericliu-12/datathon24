@@ -65,7 +65,7 @@ export default function Post({ title, subtitle, id, ref }: PostProps) {
     <Card
       className={`${
         isDragging ? "z-50" : ""
-      } absolute select-none cursor-pointer hover:bg-gray-100 hover:scale-105 transition-transform max-w-52`}
+      } absolute select-none cursor-pointer hover:bg-gray-100 hover:scale-105 transition-transform w-52`}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
       ref={ref}
       key={id}

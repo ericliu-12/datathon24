@@ -71,24 +71,8 @@ export default function Connector({ refA, refB }: ConnectorProps) {
   }, [refA, refB]);
 
   return (
-    <svg
-      style={{
-        position: "absolute",
-        width: "100%",
-        height: "100%",
-        pointerEvents: "none",
-        zIndex: -1,
-      }}
-    >
-      <path
-        d={path}
-        className="stroke-lime-500"
-        strokeWidth="2"
-        fill="none"
-        style={{
-          transform: "translateY(-6rem)",
-        }}
-      />
+    <svg className="w-screen h-screen top-0 left-0 fixed pointer-events-none -z-10">
+      <path d={path} className="stroke-lime-500 fill-none stroke-2" />
     </svg>
   );
 }

@@ -12,8 +12,6 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
-// import { signIn } from "next-auth/react";
-import AuthButton from "./AuthButton";
 
 export type Node = {
   id: number;
