@@ -9,38 +9,35 @@ import {
   SidebarMenu,
   SidebarMenuButton,
   SidebarMenuItem,
-} from "@/components/ui/sidebar";
+} from "@/components/ui/Sidebar";
+import { useEffect, useState } from "react";
 
-// Menu items.
-const items = [
-  {
-    title: "Home",
-    url: "#",
-    icon: Home,
-  },
-  {
-    title: "Inbox",
-    url: "#",
-    icon: Inbox,
-  },
-  {
-    title: "Calendar",
-    url: "#",
-    icon: Calendar,
-  },
-  {
-    title: "Search",
-    url: "#",
-    icon: Search,
-  },
-  {
-    title: "Settings",
-    url: "#",
-    icon: Settings,
-  },
-];
+interface SidebarProps {
+  items: any[];
+  setNodes: any;
+  setConnections: any;
+}
 
-export function AppSidebar() {
+export function AppSidebar({ items, setNodes, setConnections }: SidebarProps) {
+  const [shouldUpdate, setShouldUpdate] = useState(false);
+
+  useEffect(() => {
+    if (items.length) {
+      setShouldUpdate(true);
+    }
+  }, [items]);
+
+  useEffect(() => {
+    if (shouldUpdate) {
+      setShouldUpdate(false);
+    }
+  }, [shouldUpdate]);
+
+  const handleMenuItemClick = (item: any) => {
+    setNodes(item.Nodes);
+    setConnections(item.Connections);
+  };
+
   return (
     <Sidebar>
       <SidebarContent>
@@ -49,11 +46,10 @@ export function AppSidebar() {
           <SidebarGroupContent>
             <SidebarMenu>
               {items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item._id} id={item._id}>
                   <SidebarMenuButton asChild>
-                    <a href={item.url}>
-                      <item.icon />
-                      <span>{item.title}</span>
+                    <a href="#" onClick={() => handleMenuItemClick(item)}>
+                      <span>{item.Project}</span>
                     </a>
                   </SidebarMenuButton>
                 </SidebarMenuItem>

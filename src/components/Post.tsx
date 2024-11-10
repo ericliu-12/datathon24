@@ -31,7 +31,7 @@ export default function Post({
 }: PostProps) {
   const [position, setPosition] = useState<Position>({
     x: Math.random() * (window.innerWidth - 450) + 50,
-    y: Math.random() * (window.innerHeight - 250) - 80,
+    y: Math.random() * (window.innerHeight - 250),
   });
   const [isDragging, setIsDragging] = useState(false);
   const [isHovered, setIsHovered] = useState(false);
