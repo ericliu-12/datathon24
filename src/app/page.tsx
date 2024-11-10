@@ -27,6 +27,10 @@ export default function Home() {
   ]);
   const [connections, setConnections] = useState<Connection[]>([]);
 
+  const handleDeleteNode = (id: number) => {
+    setNodes(nodes.filter((node) => node.id !== id));
+  };
+
   useEffect(() => {
     if (response) {
       const newNodes = response["Nodes"].map((node) => ({
@@ -59,6 +63,7 @@ export default function Home() {
           setPosts={setNodes}
           connections={connections}
           setConnections={setConnections}
+          deleteNode={handleDeleteNode}
         />
       </div>
     </div>

@@ -24,7 +24,7 @@ export default function AuthButton() {
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Avatar>
+        <Avatar className="cursor-pointer">
           <AvatarImage
             src={session.user.image || "/default-avatar.png"}
             alt="User Avatar"

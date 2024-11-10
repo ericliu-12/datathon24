@@ -7,12 +7,14 @@ import {
   CardTitle,
   CardDescription,
 } from "@/components/ui/card";
+import { X } from "lucide-react";
 
 interface PostProps {
   title: string;
   subtitle: string;
   id: number;
   ref: any;
+  handleDelete: any;
 }
 
 type Position = {
@@ -20,12 +22,19 @@ type Position = {
   y: number;
 };
 
-export default function Post({ title, subtitle, id, ref }: PostProps) {
+export default function Post({
+  title,
+  subtitle,
+  id,
+  ref,
+  handleDelete,
+}: PostProps) {
   const [position, setPosition] = useState<Position>({
     x: Math.random() * (window.innerWidth * 0.75),
     y: Math.random() * (window.innerHeight * 0.75),
   });
   const [isDragging, setIsDragging] = useState(false);
+  const [isHovered, setIsHovered] = useState(false);
 
   const handleMouseDown = (e: any) => {
     setIsDragging(true);
@@ -70,10 +79,20 @@ export default function Post({ title, subtitle, id, ref }: PostProps) {
       ref={ref}
       key={id}
       onMouseDown={handleMouseDown}
+      onMouseEnter={() => setIsHovered(true)}
+      onMouseLeave={() => setIsHovered(false)}
     >
       <CardHeader className="text-sm p-4">
         <CardTitle>{title}</CardTitle>
         <CardDescription>{subtitle}</CardDescription>
+        {isHovered && (
+          <button
+            className="absolute right-2 top-0 text-red-500 hover:text-red-700"
+            onClick={() => handleDelete(id)}
+          >
+            <X size={18} />
+          </button>
+        )}
       </CardHeader>
     </Card>
   );

@@ -35,6 +35,7 @@ interface GraphProps {
   setPosts: React.Dispatch<React.SetStateAction<Node[]>>;
   connections: Connection[];
   setConnections: React.Dispatch<React.SetStateAction<Connection[]>>;
+  deleteNode: any;
 }
 
 export default function Graph({
@@ -42,6 +43,7 @@ export default function Graph({
   setPosts,
   connections,
   setConnections,
+  deleteNode,
 }: GraphProps) {
   const [openDialogs, setOpenDialogs] = useState(
     new Array(posts.length).fill(false)
@@ -73,18 +75,6 @@ export default function Graph({
   useEffect(() => {
     nodeRefs.current = nodeRefs.current.slice(0, posts.length);
   }, [posts.length]);
-
-  useEffect(() => {
-    console.log(posts);
-  }, [posts]);
-
-  useEffect(() => {
-    console.log(nodeRefs);
-  }, [nodeRefs]);
-
-  useEffect(() => {
-    console.log(connections);
-  }, [connections]);
 
   const addNode = () => {
     const newPost = {
@@ -195,8 +185,11 @@ export default function Graph({
   return (
     <div className="relative flex-grow">
       {/* <Button onClick={() => signIn("google")}></Button> */}
-      <Button onClick={addNode} className="h-13 w-13 rounded-full text-3xl fixed top-[92.5%] right-[68%]"> 
-          +
+      <Button
+        onClick={addNode}
+        className="h-13 w-13 rounded-full text-3xl fixed top-[92.5%] right-[68%]"
+      >
+        +
       </Button>
 
       <div className="fixed top-4 right-4">
@@ -222,6 +215,7 @@ export default function Graph({
               ref={(el: HTMLDivElement) => {
                 nodeRefs.current[index] = el;
               }}
+              handleDelete={deleteNode}
             />
           </div>
           <DialogContent>
