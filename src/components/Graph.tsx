@@ -189,7 +189,9 @@ export default function Graph({
   // Initialize dialogDescriptions state
   useEffect(() => {
     const initialDescriptions = posts.map((post) => {
-      return `${post.description}\n\nTechnologies: ${(post.technologies ?? []).join(", ")}\n\nProtocols: ${(post.protocols ?? []).join(", ")}`;
+      return `${post.description}\n\nTechnologies: ${(
+        post.technologies ?? []
+      ).join(", ")}\n\nProtocols: ${(post.protocols ?? []).join(", ")}`;
     });
     setDialogDescriptions(initialDescriptions);
   }, [posts]);
@@ -254,22 +256,28 @@ export default function Graph({
               <DialogDescription>
                 {isEditing[index]?.sub ? (
                   <textarea
-                  value={dialogDescriptions[index] || ''}
-                  onChange={(e) => handleSubtitleChange(index, e.target.value)}
-                  className="focus:outline-none w-full h-auto resize-none"
-                  onBlur={() => handleConfirmChanges(index)}
-                  rows={1 // Start with one row
-                  }
-                  style={{ height: 'auto' }} // Allow height to adjust
-                  ref={(el) => {
-                    if (el) {
-                      el.style.height = 'auto'; // Reset height to auto
-                      el.style.height = `${el.scrollHeight}px`; // Set height to scroll height
+                    value={dialogDescriptions[index] || ""}
+                    onChange={(e) =>
+                      handleSubtitleChange(index, e.target.value)
                     }
-                  }}
-                />
+                    className="focus:outline-none w-full h-auto resize-none"
+                    onBlur={() => handleConfirmChanges(index)}
+                    rows={
+                      1 // Start with one row
+                    }
+                    style={{ height: "auto" }} // Allow height to adjust
+                    ref={(el) => {
+                      if (el) {
+                        el.style.height = "auto"; // Reset height to auto
+                        el.style.height = `${el.scrollHeight}px`; // Set height to scroll height
+                      }
+                    }}
+                  />
                 ) : (
-                  <span className="whitespace-pre-wrap" onClick={() => handleSubtitleClick(index)}>
+                  <span
+                    className="whitespace-pre-wrap"
+                    onClick={() => handleSubtitleClick(index)}
+                  >
                     {/* {`${post.description}\n\n${(post.technologies ?? []).join(", ")}`} */}
                     {dialogDescriptions[index]}
                   </span>
