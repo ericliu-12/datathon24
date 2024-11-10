@@ -12,7 +12,10 @@ export default function AuthButton() {
 
   if (!session) {
     return (
-      <Button onClick={() => signIn("google")} className="font-bold">
+      <Button
+        onClick={() => signIn("google")}
+        className="font-bold bg-white text-black border border-gray-300 shadow-none hover:bg-grey-100"
+      >
         Log in
       </Button>
     );

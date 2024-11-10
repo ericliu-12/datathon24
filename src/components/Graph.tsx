@@ -12,6 +12,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Plus } from "lucide-react";
+import AuthButton from "./AuthButton";
 
 export type Node = {
   id: number;
@@ -194,9 +195,12 @@ export default function Graph({
   return (
     <div className="relative flex-grow">
       {/* <Button onClick={() => signIn("google")}></Button> */}
-      <Button onClick={addNode} className="fixed top-24 right-4">
-        <Plus className="mr-2" /> Add Node
-      </Button>
+      <div className="fixed top-4 right-4 flex flex-col gap-2">
+        <AuthButton />
+        <Button onClick={addNode}>
+          <Plus className="mr-2" /> Add Node
+        </Button>
+      </div>
 
       {posts.map((post, index) => (
         <Dialog
