@@ -21,6 +21,7 @@ type ResponseType = {
 export default function Home() {
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [showCarousel, setShowCarousel] = useState<boolean>(false);
+  const [actions, setActions] = useState([]);
 
   const handleActionHover = (node: string | null) => {
     setHoveredNode(node);
@@ -42,6 +43,7 @@ export default function Home() {
   };
 
   const handleToggleCarousel = (isChecked: boolean) => {
+    console.log(nodes);
     setShowCarousel(isChecked);
     setHoveredNode(isChecked ? null : "-1"); // Reset hoveredNode to -1 when switch is off
   };
@@ -66,6 +68,12 @@ export default function Home() {
 
       setNodes(newNodes);
       setConnections(newConnections);
+
+      const newSteps = response["Flow"].map((flow) => ({
+        scenario: flow.scenario,
+        steps: flow.steps,
+      }));
+      setActions(newSteps[0].steps);
     }
   }, [response]);
 
@@ -84,7 +92,10 @@ export default function Home() {
       </div>
       {showCarousel && (
         <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
-          <VerticalCarousel onActionHover={handleActionHover} />
+          <VerticalCarousel
+            onActionHover={handleActionHover}
+            actions={actions}
+          />
         </div>
       )}
       <div className="absolute bottom-8 right-8 flex items-center gap-2">
