@@ -1,0 +1,268 @@
+{
+  "Nodes": [
+    {
+      "id": 1,
+      "title": "User",
+      "subtitle": "Client Application",
+      "description": "The user interacts with the Netflix application through a client device (e.g., web browser, mobile app, smart TV)",
+      "technologies": [
+        "HTML5",
+        "CSS3",
+        "JavaScript",
+        "Mobile App Development Frameworks"
+      ],
+      "protocols": ["HTTP/HTTPS", "WebSockets"]
+    },
+    {
+      "id": 2,
+      "title": "Load Balancer",
+      "subtitle": "Distributes incoming traffic",
+      "description": "Directs user requests to available application servers",
+      "technologies": ["HAProxy", "NGINX", "Amazon ELB"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    },
+    {
+      "id": 3,
+      "title": "Application Server",
+      "subtitle": "Handles user requests",
+      "description": "Processes user requests, interacts with database and caching layers",
+      "technologies": ["Java", "Python", "Node.js", "Ruby on Rails"],
+      "protocols": ["HTTP/HTTPS", "gRPC"]
+    },
+    {
+      "id": 4,
+      "title": "Database",
+      "subtitle": "Stores user data and content metadata",
+      "description": "Manages user information, content metadata, and ratings",
+      "technologies": [
+        "Relational Databases (e.g., MySQL)",
+        "NoSQL Databases (e.g., MongoDB)"
+      ],
+      "protocols": ["SQL", "MongoDB Wire Protocol"]
+    },
+    {
+      "id": 5,
+      "title": "Caching Layer",
+      "subtitle": "Improves performance by reducing database queries",
+      "description": "Stores frequently accessed data in memory for faster retrieval",
+      "technologies": ["Redis", "Memcached"],
+      "protocols": ["Redis Protocol", "Memcached Protocol"]
+    },
+    {
+      "id": 6,
+      "title": "Content Delivery Network (CDN)",
+      "subtitle": "Distributes video content",
+      "description": "Delivers video content to users from edge locations worldwide",
+      "technologies": ["Akamai", "Cloudflare", "Amazon CloudFront"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    },
+    {
+      "id": 7,
+      "title": "Content Encoding and Transcoding",
+      "subtitle": "Prepares video content for delivery",
+      "description": "Encodes and transcodes video content for various devices and platforms",
+      "technologies": ["FFmpeg", "x264", "x265"],
+      "protocols": ["HTTP/HTTPS", "FTP"]
+    },
+    {
+      "id": 8,
+      "title": "Geo-Restriction and Access Control",
+      "subtitle": "Enforces content restrictions",
+      "description": "Applies geo-restrictions and access controls to video content",
+      "technologies": ["IP Geolocation", "Access Control Lists"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    },
+    {
+      "id": 9,
+      "title": "Analytics and Logging",
+      "subtitle": "Collects and analyzes user data",
+      "description": "Tracks user behavior, collects metrics, and logs events",
+      "technologies": ["Google Analytics", "Apache Kafka", "Apache Spark"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    },
+    {
+      "id": 10,
+      "title": "Search Functionality",
+      "subtitle": "Provides search capabilities",
+      "description": "Indexes and searches video content metadata",
+      "technologies": ["Elasticsearch", "Apache Solr"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    },
+    {
+      "id": 11,
+      "title": "Rating System",
+      "subtitle": "Manages user ratings",
+      "description": "Stores and updates user ratings for video content",
+      "technologies": ["Relational Databases (e.g., MySQL)"],
+      "protocols": ["SQL"]
+    },
+    {
+      "id": 12,
+      "title": "Social Features",
+      "subtitle": "Enables social interactions",
+      "description": "Allows users to interact with each other and share content",
+      "technologies": ["Social Media APIs (e.g., Facebook, Twitter)"],
+      "protocols": ["HTTP/HTTPS", "OAuth"]
+    },
+    {
+      "id": 13,
+      "title": "Payment Processing",
+      "subtitle": "Handles subscription payments",
+      "description": "Processes user payments and updates subscription status",
+      "technologies": ["Payment Gateways (e.g., Stripe, PayPal)"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    },
+    {
+      "id": 14,
+      "title": "Security",
+      "subtitle": "Ensures system security",
+      "description": "Protects the system from unauthorized access and malicious activity",
+      "technologies": [
+        "Firewalls",
+        "Intrusion Detection Systems",
+        "Encryption"
+      ],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
+    }
+  ],
+  "Connections": [
+    {
+      "source": 1,
+      "destination": 2,
+      "label": "User Request",
+      "description": "User sends request to load balancer"
+    },
+    {
+      "source": 2,
+      "destination": 3,
+      "label": "Load Balancer",
+      "description": "Load balancer directs request to application server"
+    },
+    {
+      "source": 3,
+      "destination": 4,
+      "label": "Database Query",
+      "description": "Application server queries database"
+    },
+    {
+      "source": 3,
+      "destination": 5,
+      "label": "Caching",
+      "description": "Application server retrieves data from caching layer"
+    },
+    {
+      "source": 3,
+      "destination": 6,
+      "label": "Content Delivery",
+      "description": "Application server requests content from CDN"
+    },
+    {
+      "source": 6,
+      "destination": 7,
+      "label": "Content Encoding",
+      "description": "CDN requests content encoding and transcoding"
+    },
+    {
+      "source": 7,
+      "destination": 8,
+      "label": "Geo-Restriction",
+      "description": "Content encoding and transcoding applies geo-restrictions"
+    },
+    {
+      "source": 3,
+      "destination": 9,
+      "label": "Analytics",
+      "description": "Application server sends analytics data"
+    },
+    {
+      "source": 3,
+      "destination": 10,
+      "label": "Search",
+      "description": "Application server queries search functionality"
+    },
+    {
+      "source": 3,
+      "destination": 11,
+      "label": "Rating System",
+      "description": "Application server updates rating system"
+    },
+    {
+      "source": 3,
+      "destination": 12,
+      "label": "Social Features",
+      "description": "Application server enables social features"
+    },
+    {
+      "source": 3,
+      "destination": 13,
+      "label": "Payment Processing",
+      "description": "Application server processes payment"
+    },
+    {
+      "source": 3,
+      "destination": 14,
+      "label": "Security",
+      "description": "Application server ensures system security"
+    }
+  ],
+  "Flow": [
+    {
+      "scenario": "User Requests Video Content",
+      "steps": [
+        {
+          "action": "User sends request to load balancer",
+          "node": "1"
+        },
+        {
+          "action": "Load balancer directs request to application server",
+          "node": "2"
+        },
+        {
+          "action": "Application server queries database",
+          "node": "3"
+        },
+        {
+          "action": "Application server retrieves data from caching layer",
+          "node": "5"
+        },
+        {
+          "action": "Application server requests content from CDN",
+          "node": "6"
+        },
+        {
+          "action": "CDN requests content encoding and transcoding",
+          "node": "7"
+        },
+        {
+          "action": "Content encoding and transcoding applies geo-restrictions",
+          "node": "8"
+        },
+        {
+          "action": "Application server sends analytics data",
+          "node": "9"
+        }
+      ]
+    },
+    {
+      "scenario": "User Searches for Video Content",
+      "steps": [
+        {
+          "action": "User sends search query to application server",
+          "node": "1"
+        },
+        {
+          "action": "Application server queries search functionality",
+          "node": "10"
+        },
+        {
+          "action": "Search functionality returns search results",
+          "node": "10"
+        },
+        {
+          "action": "Application server updates rating system",
+          "node": "11"
+        }
+      ]
+    }
+  ]
+}
