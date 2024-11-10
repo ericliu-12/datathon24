@@ -232,7 +232,7 @@ export default function Graph({
                 nodeRefs.current[index] = el;
               }}
               handleDelete={deleteNode}
-              forceHover={post.id + 1 == hoveredNode}
+              forceHover={post.id == hoveredNode}
             />
           </div>
           <DialogContent>

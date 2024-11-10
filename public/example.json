@@ -131,31 +131,6 @@
           "node": "5"
         }
       ]
-    },
-    {
-      "scenario": "User Receives Personalized Recommendations",
-      "steps": [
-        {
-          "action": "User interacts with application",
-          "node": "User (1)"
-        },
-        {
-          "action": "Application server requests recommendations from recommendation engine",
-          "node": "Application Server (3)"
-        },
-        {
-          "action": "Recommendation engine generates personalized recommendations",
-          "node": "Recommendation Engine (6)"
-        },
-        {
-          "action": "Recommendation engine returns recommendations to application server",
-          "node": "Recommendation Engine (6)"
-        },
-        {
-          "action": "Application server displays recommendations to user",
-          "node": "Application Server (3)"
-        }
-      ]
     }
   ]
 }

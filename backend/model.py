@@ -45,24 +45,24 @@ node_prompt = ChatPromptTemplate.from_messages(
                Keywords: {keywords}
                Do not add any intro or outro statements. Provide a technical breakdown in the following structure:
                Project: string;
-               Nodes: {{
+               Nodes: [{{
                         id: number;
                         title: string;
                         subtitle: string;
                         description: string;
                         technologies: string[];
                         protocols: string[];
-                        }};
-               Connections: type Connection = {{
+                        }}];
+               Connections: type Connection = [{{
                         source: number; --> source node id
                         destination: number; --> destination node id
                         label: string;
                         description: string;
-                        }};
-                Flow: {{
+                        }}];
+                Flow: [{{
                         scenario: string;
                         steps: {{ action: string; node: string }}[];
-                    }};
+                    }}];
                Ensure responses are organized, technical, and optimized for an audience with engineering expertise. Make sure when you set the node value in flow, you set it to just the number. Make sure the answer you return is only in JSON format."""
         ),
         ("user", "Please generate a system design breakdown.")

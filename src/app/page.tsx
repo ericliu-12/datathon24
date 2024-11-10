@@ -10,15 +10,15 @@ import { Switch } from "@/components/ui/switch";
 import { Label } from "@/components/ui/label";
 
 type DataFlow = {
-  scenario?: string;
-  steps?: { action: string; node: string }[];
+  scenario: string;
+  steps: { action: string; node: string }[];
 };
 
 type ResponseType = {
   Project: string;
   Nodes: Node[];
   Connections: Connection[];
-  Flow?: DataFlow;
+  Flow: DataFlow[];
 };
 
 export default function Home() {
@@ -26,7 +26,7 @@ export default function Home() {
 
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [showCarousel, setShowCarousel] = useState<boolean>(false);
-  const [actions, setActions] = useState([]);
+  const [actions, setActions] = useState<any>([]);
 
   const handleActionHover = (node: string | null) => {
     setHoveredNode(node);
@@ -35,7 +35,7 @@ export default function Home() {
   const [response, setResponse] = useState<ResponseType>();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
-  const [graphs, setGraphs] = useState<any[]>([]);
+  const [graphs, setGraphs] = useState<any>([]);
 
   const handleDeleteNode = (id: number) => {
     setNodes(nodes.filter((node) => node.id !== id));
@@ -49,6 +49,7 @@ export default function Home() {
 
   useEffect(() => {
     if (response && session) {
+      console.log(response["Flow"]);
       const newNodes = response["Nodes"].map((node) => ({
         id: node.id - 1,
         title: node.title,
@@ -59,8 +60,8 @@ export default function Home() {
       }));
 
       const newConnections = response["Connections"].map((connection) => ({
-        source: connection.source - 1,
-        destination: connection.destination - 1,
+        source: connection.source,
+        destination: connection.destination,
         label: connection.label,
         description: connection.description,
       }));
@@ -87,13 +88,14 @@ export default function Home() {
           console.error("Error updating data:", err);
         });
 
-      const newSteps = response["Flow"].map((flow: any) => ({
-        scenario: flow.scenario,
-        steps: flow.steps,
-      }));
-      setActions(newSteps[0].steps);
+      if (response["Flow"] && response["Flow"][0])
+        setActions(response["Flow"][0].steps);
     }
   }, [response]);
+
+  useEffect(() => {
+    console.log(actions);
+  }, [actions]);
 
   useEffect(() => {
     if (session) {
@@ -118,6 +120,7 @@ export default function Home() {
         items={graphs}
         setNodes={setNodes}
         setConnections={setConnections}
+        setActions={setActions}
       />
       <div>
         <TypingPlaceholder response={response} setResponse={setResponse} />
@@ -132,7 +135,7 @@ export default function Home() {
           />
         </div>
         {showCarousel && (
-          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
+          <div className="absolute right-0 top-3/4 transform -translate-y-1/2 w-1/10 max-w-xs">
             <VerticalCarousel
               onActionHover={handleActionHover}
               actions={actions}

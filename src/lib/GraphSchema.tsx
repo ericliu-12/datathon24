@@ -8,7 +8,7 @@ export interface GraphDocument {
       Project: String;
       Nodes: [];
       Connections: [];
-      Flow?: {};
+      Flow: [];
     }
   ];
 }
@@ -25,7 +25,7 @@ const GraphSchema = new Schema<GraphDocument>({
         Project: String,
         Nodes: [],
         Connections: [],
-        Flow: {},
+        Flow: [],
       },
     ],
     required: [true, "Json is required"],

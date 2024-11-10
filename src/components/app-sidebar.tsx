@@ -16,9 +16,15 @@ interface SidebarProps {
   items: any[];
   setNodes: any;
   setConnections: any;
+  setActions: any;
 }
 
-export function AppSidebar({ items, setNodes, setConnections }: SidebarProps) {
+export function AppSidebar({
+  items,
+  setNodes,
+  setConnections,
+  setActions,
+}: SidebarProps) {
   const [shouldUpdate, setShouldUpdate] = useState(false);
 
   useEffect(() => {
@@ -36,6 +42,7 @@ export function AppSidebar({ items, setNodes, setConnections }: SidebarProps) {
   const handleMenuItemClick = (item: any) => {
     setNodes(item.Nodes);
     setConnections(item.Connections);
+    setActions(item.Flow[0].steps);
   };
 
   return (
