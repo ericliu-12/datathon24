@@ -28,12 +28,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
+      <body className="relative"
       // className={`${sfProSans.variable} ${sfProMono.variable} antialiased`}
       >
         <SessionProviderWrapper>
           <SidebarProvider>
             <AppSidebar />
+            <img src="nexus.svg" alt="nexus_logo" className="absolute top-0 ml-[14%] mt-2 z-10 drop-shadow-xl" />
             {/* <SidebarTrigger /> */}
             {children}
           </SidebarProvider>

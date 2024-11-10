@@ -14,6 +14,10 @@ export default {
 			xl: '10px 15px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
 		},
 
+		dropShadow: {
+			xl: '5px 5px 0 rgb(0 0 0)'
+		},
+		
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',

@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import Post from "@/components/Post";
 import Connector from "./Connector";
 import {
@@ -11,15 +11,14 @@ import {
   DialogDescription,
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
-import { Plus } from "lucide-react";
 import AuthButton from "./AuthButton";
 
 export type Node = {
   id: number;
   title: string;
   subtitle: string;
-  description?: string;
-  technologies?: string[];
+  description: string;
+  technologies: string[];
   protocols?: string[];
 };
 
@@ -152,22 +151,24 @@ export default function Graph({
     setIsEditing(newIsEditing);
   };
 
-  const handleSubtitleClick = (index: any) => {
-    const newIsEditing = [...isEditing];
-    newIsEditing[index] = { ...newIsEditing[index], sub: true };
-    setIsEditing(newIsEditing);
-  };
-
   const handleTitleChange = (index: any, newTitle: any) => {
     const updatedPosts = [...posts];
     updatedPosts[index].title = newTitle;
     setPosts(updatedPosts);
   };
 
-  const handleSubtitleChange = (index: any, newSubtitle: any) => {
-    const updatedPosts = [...posts];
-    updatedPosts[index].subtitle = newSubtitle;
-    setPosts(updatedPosts);
+  const handleSubtitleClick = (index: number) => {
+    setIsEditing((prev) => {
+      const newEditingState = [...prev];
+      newEditingState[index] = { sub: true };
+      return newEditingState;
+    });
+  };
+
+  const handleSubtitleChange = (index: number, value: string) => {
+    const newDescriptions = [...dialogDescriptions];
+    newDescriptions[index] = value; // Update the specific index
+    setDialogDescriptions(newDescriptions);
   };
 
   const handleConfirmChanges = (index: any) => {
@@ -181,6 +182,16 @@ export default function Graph({
     updatedConnections[index].label = newLabel;
     setConnections(updatedConnections);
   };
+
+  const [dialogDescriptions, setDialogDescriptions] = useState<string[]>([]);
+
+  // Initialize dialogDescriptions state
+  useEffect(() => {
+    const initialDescriptions = posts.map((post) => {
+      return `${post.description}\n\nTechnologies: ${(post.technologies ?? []).join(", ")}\n\nProtocols: ${(post.protocols ?? []).join(", ")}`;
+    });
+    setDialogDescriptions(initialDescriptions);
+  }, [posts]);
 
   return (
     <div className="relative flex-grow">
@@ -237,18 +248,25 @@ export default function Graph({
               </DialogTitle>
               <DialogDescription>
                 {isEditing[index]?.sub ? (
-                  <input
-                    type="text"
-                    value={post.subtitle}
-                    onChange={(e) =>
-                      handleSubtitleChange(index, e.target.value)
+                  <textarea
+                  value={dialogDescriptions[index] || ''}
+                  onChange={(e) => handleSubtitleChange(index, e.target.value)}
+                  className="focus:outline-none w-full h-auto resize-none"
+                  onBlur={() => handleConfirmChanges(index)}
+                  rows={1 // Start with one row
+                  }
+                  style={{ height: 'auto' }} // Allow height to adjust
+                  ref={(el) => {
+                    if (el) {
+                      el.style.height = 'auto'; // Reset height to auto
+                      el.style.height = `${el.scrollHeight}px`; // Set height to scroll height
                     }
-                    className="focus:outline-none"
-                    onBlur={() => handleConfirmChanges(index)}
-                  />
+                  }}
+                />
                 ) : (
-                  <span onClick={() => handleSubtitleClick(index)}>
-                    {post.subtitle}
+                  <span className="whitespace-pre-wrap" onClick={() => handleSubtitleClick(index)}>
+                    {/* {`${post.description}\n\n${(post.technologies ?? []).join(", ")}`} */}
+                    {dialogDescriptions[index]}
                   </span>
                 )}
               </DialogDescription>
