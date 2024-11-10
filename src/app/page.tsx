@@ -50,24 +50,29 @@ export default function Home() {
   return (
     <div>
       <TypingPlaceholder /> {/* Add TypingPlaceholder component */}
-      <div className="flex justify-end mt-4 pr-4">
-        <Button onClick={createNode} className="flex items-center gap-2">
-          Add Node <FaPlus />
-        </Button>
-      </div>
-      <div className="pt-24"> {/* Padding to avoid overlap with ChatBar */}
+      <div className="pt-24 flex flex-col h-screen">
+        {" "}
+        {/* Padding to avoid overlap with ChatBar */}
         <Graph />
         {nodes.map((node, index) => (
           <div
             key={node.id}
             ref={(el) => (nodeRefs.current[node.id] = el)} // Assign ref to each node by its id
-            style={{ position: "absolute", top: `${100 + index * 200}px`, left: "100px" }}
+            style={{
+              position: "absolute",
+              top: `${100 + index * 200}px`,
+              left: "100px",
+            }}
           >
-            <Post title={node.title} sub={node.sub} id={node.id} openModal={openModal} />
+            <Post
+              title={node.title}
+              sub={node.sub}
+              id={node.id}
+              openModal={openModal}
+            />
           </div>
         ))}
         {isModalOpen && <Modal closeModal={closeModal} />}
-        
         {/* Render connectors for each connection */}
         {connections.map((connection, index) => {
           const refA = nodeRefs.current[connection.from];
