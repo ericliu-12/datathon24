@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 
 interface ConnectorProps {
   refA: React.RefObject<HTMLDivElement>;
@@ -14,8 +14,7 @@ export default function Connector({
   onLabelChange,
 }: ConnectorProps) {
   const [path, setPath] = useState("");
-  const [position, setPosition] = useState({ x: 0, y: 0 });
-  const [isEditing, setIsEditing] = useState(false);
+  const animationFrameId = useRef<number | null>(null);
 
   useEffect(() => {
     const updatePath = () => {
@@ -23,57 +22,57 @@ export default function Connector({
         const rectA = refA.current.getBoundingClientRect();
         const rectB = refB.current.getBoundingClientRect();
 
-        const centerA = {
-          x: rectA.x + rectA.width / 2,
-          y: rectA.y + rectA.height / 2,
-        };
-        const centerB = {
-          x: rectB.x + rectB.width / 2,
-          y: rectB.y + rectB.height / 2,
-        };
+        // Center coordinates for each card
+        const startX = rectA.left + rectA.width / 2;
+        const startY = rectA.top + rectA.height / 2;
+        const endX = rectB.left + rectB.width / 2;
+        const endY = rectB.top + rectB.height / 2;
 
-        const deltaX = centerB.x - centerA.x;
-        const deltaY = centerB.y - centerA.y;
+        // Control points for a smooth curve
+        const controlX1 = startX + (endX - startX) / 2;
+        const controlY1 = startY; // Align control point vertically with start
+        const controlX2 = endX - (endX - startX) / 2;
+        const controlY2 = endY; // Align control point vertically with end
 
-        const startX =
-          deltaX > 0 ? rectA.right : deltaX < 0 ? rectA.left : centerA.x;
-        const startY =
-          deltaY > 0 ? rectA.bottom : deltaY < 0 ? rectA.top : centerA.y;
-        const endX =
-          deltaX > 0 ? rectB.left : deltaX < 0 ? rectB.right : centerB.x;
-        const endY =
-          deltaY > 0 ? rectB.top : deltaY < 0 ? rectB.bottom : centerB.y;
-
-        const controlX1 = startX + deltaX / 3;
-        const controlY1 = startY + deltaY / 3;
-        const controlX2 = endX - deltaX / 3;
-        const controlY2 = endY - deltaY / 3;
-
+        // Set the path to start and end at the centers of the cards
         setPath(
           `M ${startX} ${startY} C ${controlX1} ${controlY1}, ${controlX2} ${controlY2}, ${endX} ${endY}`
         );
-
-        // Position the label halfway along the path
-        setPosition({
-          x: (startX + endX) / 2,
-          y: (startY + endY) / 2,
-        });
       }
+    };
+
+    const debouncedUpdatePath = () => {
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      animationFrameId.current = requestAnimationFrame(updatePath);
     };
 
     updatePath();
 
-    const observer = new MutationObserver(updatePath);
-    observer.observe(refA.current!, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
-    observer.observe(refB.current!, {
-      attributes: true,
-      attributeFilter: ["style"],
-    });
+    const observer = new MutationObserver(debouncedUpdatePath);
+    if (refA.current) {
+      observer.observe(refA.current, {
+        attributes: true,
+        attributeFilter: ["style", "class"],
+      });
+    }
+    if (refB.current) {
+      observer.observe(refB.current, {
+        attributes: true,
+        attributeFilter: ["style", "class"],
+      });
+    }
 
-    return () => observer.disconnect();
+    window.addEventListener("resize", debouncedUpdatePath);
+
+    return () => {
+      if (animationFrameId.current !== null) {
+        cancelAnimationFrame(animationFrameId.current);
+      }
+      observer.disconnect();
+      window.removeEventListener("resize", debouncedUpdatePath);
+    };
   }, [refA, refB]);
 
   const handleLabelClick = () => setIsEditing(true);
@@ -82,29 +81,17 @@ export default function Connector({
   const handleBlur = () => setIsEditing(false);
 
   return (
-    <div>
-      <svg className="absolute pointer-events-none w-full h-screen -z-10">
-        <path d={path} className="stroke-lime-500 fill-none stroke-2" />
-      </svg>
-      <div
-        style={{ position: "absolute", left: position.x, top: position.y }}
-        className="bg-white text-gray-700 text-sm p-1 rounded shadow"
-      >
-        {isEditing ? (
-          <input
-            type="text"
-            value={label}
-            onChange={handleLabelChange}
-            onBlur={handleBlur}
-            className="border p-1 text-sm"
-            autoFocus
-          />
-        ) : (
-          <span onClick={handleLabelClick} className="cursor-pointer">
-            {label || "Click to edit"}
-          </span>
-        )}
-      </div>
-    </div>
+    <svg
+      style={{
+        position: "absolute",
+        top: 0,
+        left: 0,
+        width: "100%",
+        height: "100%",
+        pointerEvents: "none",
+      }}
+    >
+      <path d={path} stroke="green" strokeWidth="2" fill="none" />
+    </svg>
   );
 }

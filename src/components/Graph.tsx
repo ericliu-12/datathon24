@@ -130,7 +130,7 @@ export default function Graph() {
 
   return (
     <div className="relative min-h-screen">
-      <Button onClick={addNode} className="fixed top-4 right-4">
+      <Button onClick={addNode} className="fixed top-24 right-4">
         <Plus className="mr-2" /> Add Node
       </Button>
 
