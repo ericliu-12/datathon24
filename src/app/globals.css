@@ -2,8 +2,15 @@
 @tailwind components;
 @tailwind utilities;
 
+@font-face {
+  font-family: "fa";
+  src: url("fonts/sf-pro-text-regular.woff");
+  font-weight: normal;
+  font-style: normal;
+}
+
 body {
-  font-family: SF Pro;
+  font-family: "fa";
 }
 
 ::-webkit-scrollbar {
