@@ -37,8 +37,10 @@ node_prompt = ChatPromptTemplate.from_messages(
         (
             "system",
             """You are an expert in system design and architecture. Given a request to design a complex system based on the following information:
-               One of the nodes should be the user.
+               One of the nodes should be the user. Also consider adding a load balancer, CDN, and databases.
+               Limit the number of nodes to 7 or less.
                If there is a connection that goes both ways, only add it to connections once.
+               For example, you can't have a connection from 0 to 1 and also from 1 to 0.
                Project Name: {project_name}
                Keywords: {keywords}
                Do not add any intro or outro statements. Provide a technical breakdown in the following structure:

@@ -38,7 +38,7 @@ export default async function CreateUser({ email }: Props) {
     if (!existingUser) {
       const newUser = new Graph({
         email: email,
-        data: [figma],
+        data: [],
       });
 
       await newUser.save();

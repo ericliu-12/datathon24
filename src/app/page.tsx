@@ -23,7 +23,7 @@ type ResponseType = {
 
 export default function Home() {
   const { data: session } = useSession();
-  
+
   const [hoveredNode, setHoveredNode] = useState<string | null>(null);
   const [showCarousel, setShowCarousel] = useState<boolean>(false);
   const [actions, setActions] = useState([]);
@@ -87,7 +87,7 @@ export default function Home() {
           console.error("Error updating data:", err);
         });
 
-      const newSteps = response["Flow"].map((flow) => ({
+      const newSteps = response["Flow"].map((flow: any) => ({
         scenario: flow.scenario,
         steps: flow.steps,
       }));
@@ -113,7 +113,7 @@ export default function Home() {
   }, [session]);
 
   return (
-    <div>
+    <>
       <AppSidebar
         items={graphs}
         setNodes={setNodes}
@@ -128,21 +128,25 @@ export default function Home() {
             connections={connections}
             setConnections={setConnections}
             deleteNode={handleDeleteNode}
+            hoveredNode={hoveredNode}
+          />
+        </div>
+        {showCarousel && (
+          <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
+            <VerticalCarousel
+              onActionHover={handleActionHover}
+              actions={actions}
+            />
+          </div>
+        )}
+        <div className="absolute bottom-8 right-8 flex items-center gap-2">
+          <Label htmlFor="airplane-mode">enable workflow</Label>
+          <Switch
+            checked={showCarousel}
+            onCheckedChange={handleToggleCarousel}
           />
         </div>
       </div>
-      {showCarousel && (
-        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
-          <VerticalCarousel
-            onActionHover={handleActionHover}
-            actions={actions}
-          />
-        </div>
-      )}
-      <div className="absolute bottom-8 right-8 flex items-center gap-2">
-        <Label htmlFor="airplane-mode">enable workflow</Label>
-        <Switch checked={showCarousel} onCheckedChange={handleToggleCarousel} />
-      </div>
-    </div>
+    </>
   );
 }

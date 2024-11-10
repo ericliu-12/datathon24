@@ -202,7 +202,6 @@ export default function Graph({
       <Button
         onClick={() => {
           addNode();
-          console.log(posts);
         }}
         className="h-13 w-13 rounded-full text-3xl fixed top-[92.5%] right-[68%]"
       >
@@ -288,7 +287,7 @@ export default function Graph({
         </Dialog>
       ))}
 
-      {/* {connections.map(({ source, destination, label, description }, index) =>
+      {connections.map(({ source, destination, label, description }, index) =>
         nodeRefs.current[source] && nodeRefs.current[destination] ? (
           <Connector
             key={index}
@@ -302,7 +301,7 @@ export default function Graph({
             onDescChange={(newDesc: string) => handleDescChange(index, newDesc)}
           />
         ) : null
-      )} */}
+      )}
     </div>
   );
 }
