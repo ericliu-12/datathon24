@@ -54,7 +54,7 @@ export default function VerticalCarousel({ onActionHover }) {
         align: "start",
       }}
       orientation="vertical"
-      className="w-full max-w-xs"
+      className="w-full max-w-xs mr-4"
     >
       <CarouselContent className="-mt-1 h-[155px]">
         {actions.map((item, index) => (

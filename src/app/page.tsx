@@ -88,7 +88,7 @@ export default function Home() {
         </div>
       )}
       <div className="absolute bottom-8 right-8 flex items-center gap-2">
-        <Label htmlFor="airplane-mode">Enable Workflow</Label>
+        <Label htmlFor="airplane-mode">enable workflow</Label>
         <Switch checked={showCarousel} onCheckedChange={handleToggleCarousel} />
       </div>
     </div>

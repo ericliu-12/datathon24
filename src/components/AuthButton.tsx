@@ -20,7 +20,7 @@ export default function AuthButton() {
     return (
       <Button
         onClick={() => signIn("google")}
-        className="font-bold bg-white text-black border border-gray-300 shadow-none hover:bg-grey-100"
+        className="font-bold bg-black text-white border shadow-md hover:bg-grey-100"
       >
         Log in
       </Button>
@@ -38,7 +38,7 @@ export default function AuthButton() {
         </Avatar>
       </PopoverTrigger>
       <PopoverContent
-        className="p-0 min-w-[150px] w-auto" // Remove padding and set width to auto
+        className="p-0 min-w-[150px] w-auto mr-4 mt-1" // Remove padding and set width to auto
         onOpenAutoFocus={(event) => event.preventDefault()}
       >
         <div className="flex flex-col">
