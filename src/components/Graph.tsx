@@ -275,16 +275,18 @@ export default function Graph({
         </Dialog>
       ))}
 
-      {connections.map(({ source, destination, label }, index) =>
+      {connections.map(({ source, destination, label, description }, index) =>
         nodeRefs.current[source] && nodeRefs.current[destination] ? (
           <Connector
             key={index}
             refA={nodeRefs.current[source]}
             refB={nodeRefs.current[destination]}
             label={label}
+            desc={description}
             onLabelChange={(newLabel: string) =>
               handleLabelChange(index, newLabel)
             }
+            onDescChange={(newDesc: string) => handleDescChange(index, newDesc)}
           />
         ) : null
       )}

@@ -1,21 +1,32 @@
 import { useEffect, useState, useRef } from "react";
 
+import {
+  HoverCard,
+  HoverCardContent,
+  HoverCardTrigger,
+} from "@/components/ui/hover-card";
+
 interface ConnectorProps {
   refA: HTMLDivElement;
   refB: HTMLDivElement;
   label: string;
+  desc?: string;
   onLabelChange: any;
+  onDescChange: any;
 }
 
 export default function Connector({
   refA,
   refB,
   label,
+  desc,
   onLabelChange,
+  onDescChange,
 }: ConnectorProps) {
   const [path, setPath] = useState("");
   const [labelPos, setLabelPos] = useState([0]);
   const [labelText, setLabelText] = useState(label);
+  const [descText, setDescText] = useState(desc);
 
   const animationFrameId = useRef<number | null>(null);
 
@@ -83,15 +94,23 @@ export default function Connector({
     };
   }, [refA, refB]);
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
     setLabelText(e.target.value);
+  };
+
+  const handleDescChange = (e: React.ChangeEvent<HTMLTextAreaElement>) => {
+    setDescText(e.target.value);
   };
 
   const handleInputBlur = () => {
     onLabelChange(labelText);
   };
 
-  const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
+  const handleDescBlur = () => {
+    onDescChange(descText);
+  };
+
+  const handleKeyDown = (e: React.KeyboardEvent<HTMLTextAreaElement>) => {
     if (e.key === "Enter") {
       onLabelChange(labelText);
       e.currentTarget.blur();
@@ -101,15 +120,33 @@ export default function Connector({
   return (
     <>
       <div className="fixed" style={{ left: labelPos[0], top: labelPos[1] }}>
-        <input
-          type="text"
-          placeholder="Click to edit"
-          value={labelText}
-          onChange={handleInputChange}
-          onBlur={handleInputBlur}
-          onKeyDown={handleKeyDown}
-          className="border-none outline-none p-1 bg-transparent text-sm text-gray-700 text-wrap"
-        />
+        <HoverCard>
+          <HoverCardTrigger asChild>
+            <textarea
+              placeholder="Click to edit"
+              value={labelText}
+              onChange={handleInputChange}
+              onBlur={handleInputBlur}
+              onKeyDown={handleKeyDown}
+              className="border-none outline-none bg-transparent text-sm text-gray-600 resize-none cursor-pointer hover:underline"
+              style={{ maxWidth: "150px", overflowWrap: "break-word" }}
+            />
+          </HoverCardTrigger>
+          <HoverCardContent className="w-80">
+            <div className="flex flex-col w-full gap-2">
+              <h4 className="text-sm font-semibold">Description</h4>
+              <textarea
+                placeholder="Click to edit"
+                value={descText}
+                onChange={handleDescChange}
+                onBlur={handleDescBlur}
+                onKeyDown={handleKeyDown}
+                className="border-none outline-none bg-transparent text-sm text-gray-600 resize-none"
+                style={{ overflowWrap: "break-word" }}
+              />
+            </div>
+          </HoverCardContent>
+        </HoverCard>
       </div>
 
       <svg className="w-screen h-screen top-0 left-0 fixed pointer-events-none -z-10">

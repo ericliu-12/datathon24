@@ -99,12 +99,6 @@
       "description": "The application server requests personalized recommendations from the recommendation engine."
     },
     {
-      "source": 6,
-      "destination": 3,
-      "label": "Recommendation Response",
-      "description": "The recommendation engine returns personalized recommendations to the application server."
-    },
-    {
       "source": 3,
       "destination": 7,
       "label": "Cache Query",
