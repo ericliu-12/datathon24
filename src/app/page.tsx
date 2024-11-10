@@ -1,86 +1,65 @@
 "use client";
 
-import React, { useState, useRef } from "react";
-import Graph from "@/components/Graph";
-import Post from "@/components/Post";
-import Modal from "@/components/ui/Modal";
-import TypingPlaceholder from "@/components/ui/TextInput"; // Import TypingPlaceholder component
-import { Button } from "@/components/ui/button"; // Import Button component
-import { FaPlus } from "react-icons/fa"; // Import Plus icon from react-icons
-import Connector from "@/components/Connector"; // Import Connector component
+import React, { useState, useEffect } from "react";
+import Graph, { Connection, Node } from "@/components/Graph";
+import TypingPlaceholder from "@/components/ui/TextInput";
 
-type Node = {
-  id: number;
-  title: string;
-  sub: string;
+type DataFlow = {
+  scenario?: string;
+  steps?: { action: string; node: string }[];
+};
+
+type ResponseType = {
+  Nodes: Node[];
+  Connections: Connection[];
+  Flow: DataFlow;
 };
 
 export default function Home() {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [nodes, setNodes] = useState<Node[]>([]);
-  const [connections, setConnections] = useState([]);
-  const nodeRefs = useRef<{ [key: number]: HTMLDivElement | null }>({}); // Dynamic refs for each node
+  const [response, setResponse] = useState<ResponseType>();
+  const [nodes, setNodes] = useState<Node[]>([
+    {
+      id: 0,
+      title: "Digital Risography",
+      subtitle: "Insights into blend modes",
+    },
+    { id: 1, title: "Figma Basics", subtitle: "Design with me" },
+  ]);
+  const [connections, setConnections] = useState<Connection[]>([]);
 
-  const openModal = () => {
-    setIsModalOpen(true);
-  };
+  useEffect(() => {
+    if (response) {
+      const newNodes = response["Nodes"].map((node) => ({
+        id: node.id - 1,
+        title: node.title,
+        subtitle: node.subtitle,
+        description: node.description,
+        technologies: node.technologies,
+        protocols: node.protocols,
+      }));
 
-  const closeModal = () => {
-    setIsModalOpen(false);
-  };
+      const newConnections = response["Connections"].map((connection) => ({
+        source: connection.source - 1,
+        destination: connection.destination - 1,
+        label: connection.label,
+        description: connection.description,
+      }));
 
-  const createNode = () => {
-    const newNode: Node = {
-      id: nodes.length + 1,
-      title: `Node ${nodes.length + 1}`,
-      sub: `Subtitle ${nodes.length + 1}`,
-    };
-    setNodes([...nodes, newNode]);
-  };
-
-  const createConnection = () => {
-    if (nodes.length < 2) return;
-    const newConnection = {
-      from: nodes[nodes.length - 2].id,
-      to: nodes[nodes.length - 1].id,
-    };
-    setConnections([...connections, newConnection]);
-  };
+      setNodes(newNodes);
+      setConnections(newConnections);
+    }
+  }, [response]);
 
   return (
     <div>
-      <TypingPlaceholder /> {/* Add TypingPlaceholder component */}
+      <TypingPlaceholder response={response} setResponse={setResponse} />
       <div className="pt-24 flex flex-col h-screen">
-        {" "}
-        {/* Padding to avoid overlap with ChatBar */}
-        <Graph />
-        {nodes.map((node, index) => (
-          <div
-            key={node.id}
-            ref={(el) => (nodeRefs.current[node.id] = el)} // Assign ref to each node by its id
-            style={{
-              position: "absolute",
-              top: `${100 + index * 200}px`,
-              left: "100px",
-            }}
-          >
-            <Post
-              title={node.title}
-              sub={node.sub}
-              id={node.id}
-              openModal={openModal}
-            />
-          </div>
-        ))}
-        {isModalOpen && <Modal closeModal={closeModal} />}
-        {/* Render connectors for each connection */}
-        {connections.map((connection, index) => {
-          const refA = nodeRefs.current[connection.from];
-          const refB = nodeRefs.current[connection.to];
-          return refA && refB ? (
-            <Connector key={index} refA={refA} refB={refB} />
-          ) : null;
-        })}
+        <Graph
+          posts={nodes}
+          setPosts={setNodes}
+          connections={connections}
+          setConnections={setConnections}
+        />
       </div>
     </div>
   );

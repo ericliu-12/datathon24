@@ -10,9 +10,9 @@ import {
 
 interface PostProps {
   title: string;
-  sub: string;
+  subtitle: string;
   id: number;
-  ref: React.RefObject<HTMLDivElement>;
+  ref: any;
 }
 
 type Position = {
@@ -20,7 +20,7 @@ type Position = {
   y: number;
 };
 
-export default function Post({ title, sub, id, ref }: PostProps) {
+export default function Post({ title, subtitle, id, ref }: PostProps) {
   const [position, setPosition] = useState<Position>({
     x: Math.random() * (window.innerWidth * 0.75),
     y: Math.random() * (window.innerHeight * 0.75),
@@ -65,7 +65,7 @@ export default function Post({ title, sub, id, ref }: PostProps) {
     <Card
       className={`${
         isDragging ? "z-50" : ""
-      } absolute select-none cursor-pointer hover:bg-gray-200 hover:scale-105 transition-transform`}
+      } absolute select-none cursor-pointer hover:bg-gray-100 hover:scale-105 transition-transform max-w-52`}
       style={{ left: `${position.x}px`, top: `${position.y}px` }}
       ref={ref}
       key={id}
@@ -73,7 +73,7 @@ export default function Post({ title, sub, id, ref }: PostProps) {
     >
       <CardHeader className="text-sm p-4">
         <CardTitle>{title}</CardTitle>
-        <CardDescription>{sub}</CardDescription>
+        <CardDescription>{subtitle}</CardDescription>
       </CardHeader>
     </Card>
   );
