@@ -71,6 +71,7 @@ const TypingPlaceholder = ({ response, setResponse }: SearchProps) => {
       }
 
       const data = await response.json();
+      console.log(data);
       setResponse(data);
     } catch (error) {
       console.error("Error:", error);

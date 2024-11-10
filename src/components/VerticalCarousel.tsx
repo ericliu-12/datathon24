@@ -10,27 +10,27 @@ import {
 import { Card, CardContent } from "./ui/card";
 import { useEffect, useState } from "react";
 
-const actions = [
-  { action: "User sends request to load balancer", node: "1" },
-  {
-    action: "Load balancer directs request to application server",
-    node: "2",
-  },
-  {
-    action: "Application server retrieves data from database",
-    node: "3",
-  },
-  {
-    action: "Application server requests video content from CDN",
-    node: "3",
-  },
-  {
-    action: "CDN delivers video content to user",
-    node: "5",
-  },
-];
+// const actions = [
+//   { action: "User sends request to load balancer", node: "1" },
+//   {
+//     action: "Load balancer directs request to application server",
+//     node: "2",
+//   },
+//   {
+//     action: "Application server retrieves data from database",
+//     node: "3",
+//   },
+//   {
+//     action: "Application server requests video content from CDN",
+//     node: "3",
+//   },
+//   {
+//     action: "CDN delivers video content to user",
+//     node: "5",
+//   },
+// ];
 
-export default function VerticalCarousel({ onActionHover }) {
+export default function VerticalCarousel({ onActionHover, actions }) {
   const [activeIndex, setActiveIndex] = useState(0);
 
   // Update hovered node whenever active item changes
@@ -39,6 +39,7 @@ export default function VerticalCarousel({ onActionHover }) {
   }, [activeIndex, onActionHover]);
 
   const handleNext = () => {
+    console.log(actions);
     setActiveIndex((prevIndex) => (prevIndex + 1) % actions.length);
   };
 
