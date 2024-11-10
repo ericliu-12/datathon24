@@ -8,28 +8,46 @@ import {
   CarouselPrevious,
 } from "./ui/carousel";
 import { Card, CardContent } from "./ui/card";
+import { useEffect, useState } from "react";
 
 const actions = [
-  { action: "User sends request to load balancer", node: "User (1)" },
+  { action: "User sends request to load balancer", node: "1" },
   {
     action: "Load balancer directs request to application server",
-    node: "Load Balancer (2)",
+    node: "2",
   },
   {
     action: "Application server retrieves data from database",
-    node: "Application Server (3)",
+    node: "3",
   },
   {
     action: "Application server requests video content from CDN",
-    node: "Application Server (3)",
+    node: "3",
   },
   {
     action: "CDN delivers video content to user",
-    node: "Content Delivery Network (5)",
+    node: "5",
   },
 ];
 
-export default function VerticalCarousel() {
+export default function VerticalCarousel({ onActionHover }) {
+  const [activeIndex, setActiveIndex] = useState(0);
+
+  // Update hovered node whenever active item changes
+  useEffect(() => {
+    onActionHover(actions[activeIndex].node);
+  }, [activeIndex, onActionHover]);
+
+  const handleNext = () => {
+    setActiveIndex((prevIndex) => (prevIndex + 1) % actions.length);
+  };
+
+  const handlePrevious = () => {
+    setActiveIndex((prevIndex) =>
+      prevIndex === 0 ? actions.length - 1 : prevIndex - 1
+    );
+  };
+
   return (
     <Carousel
       opts={{
@@ -55,8 +73,12 @@ export default function VerticalCarousel() {
           </CarouselItem>
         ))}
       </CarouselContent>
-      <CarouselPrevious />
-      <CarouselNext />
+      <div onClick={handlePrevious}>
+        <CarouselPrevious />
+      </div>
+      <div onClick={handleNext}>
+        <CarouselNext />
+      </div>
     </Carousel>
   );
 }
