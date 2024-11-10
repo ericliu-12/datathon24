@@ -29,12 +29,12 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        // className={`${sfProSans.variable} ${sfProMono.variable} antialiased`}
+      // className={`${sfProSans.variable} ${sfProMono.variable} antialiased`}
       >
         <SessionProviderWrapper>
           <SidebarProvider>
             <AppSidebar />
-            <SidebarTrigger />
+            {/* <SidebarTrigger /> */}
             {children}
           </SidebarProvider>
         </SessionProviderWrapper>

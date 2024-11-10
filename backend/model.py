@@ -22,7 +22,7 @@ keyword_prompt = ChatPromptTemplate.from_messages(
             "system",
            """Given {prompt}, extract the project name if there is any, and the type of network it is 
            (system design or something else), and the key features of the project through examples if 
-           provided or specific keywords. I need your output to only be JSON without any intro or outro sentences, 
+           provided or specific keywords. I need your output to only be JSON without any intro or outro sentences, with a max of 7 key features,
            and to follow this example strictly: 
            {{"Netflix": ["video streaming", "user recommendations", "content delivery", "scalability", "subscription service", "multi-platform support"]}}"""
 

@@ -4,124 +4,60 @@
       "id": 1,
       "title": "User",
       "subtitle": "Client Application",
-      "description": "The user interacts with the Netflix application through a client device (e.g., web browser, mobile app, smart TV)",
-      "technologies": [
-        "HTML5",
-        "CSS3",
-        "JavaScript",
-        "Mobile App Development Frameworks"
-      ],
-      "protocols": ["HTTP/HTTPS", "WebSockets"]
+      "description": "The user interacts with the Netflix application through a web browser, mobile app, or smart TV app.",
+      "technologies": ["Web App", "Mobile App", "Smart TV App"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
     },
     {
       "id": 2,
       "title": "Load Balancer",
       "subtitle": "Distributes incoming traffic",
-      "description": "Directs user requests to available application servers",
-      "technologies": ["HAProxy", "NGINX", "Amazon ELB"],
+      "description": "Directs incoming traffic to multiple application servers to ensure scalability and high availability.",
+      "technologies": ["HAProxy", "NGINX"],
       "protocols": ["HTTP/HTTPS", "TCP/IP"]
     },
     {
       "id": 3,
       "title": "Application Server",
       "subtitle": "Handles user requests",
-      "description": "Processes user requests, interacts with database and caching layers",
-      "technologies": ["Java", "Python", "Node.js", "Ruby on Rails"],
-      "protocols": ["HTTP/HTTPS", "gRPC"]
+      "description": "Processes user requests, retrieves data from the database, and returns responses to the user.",
+      "technologies": ["Java", "Python", "Node.js"],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
     },
     {
       "id": 4,
       "title": "Database",
       "subtitle": "Stores user data and content metadata",
-      "description": "Manages user information, content metadata, and ratings",
-      "technologies": [
-        "Relational Databases (e.g., MySQL)",
-        "NoSQL Databases (e.g., MongoDB)"
-      ],
-      "protocols": ["SQL", "MongoDB Wire Protocol"]
+      "description": "Stores user information, content metadata, and viewing history.",
+      "technologies": ["MySQL", "MongoDB", "Cassandra"],
+      "protocols": ["SQL", "NoSQL"]
     },
     {
       "id": 5,
-      "title": "Caching Layer",
-      "subtitle": "Improves performance by reducing database queries",
-      "description": "Stores frequently accessed data in memory for faster retrieval",
-      "technologies": ["Redis", "Memcached"],
-      "protocols": ["Redis Protocol", "Memcached Protocol"]
+      "title": "Content Delivery Network (CDN)",
+      "subtitle": "Distributes video content",
+      "description": "Delivers video content to users through a network of edge servers, reducing latency and improving performance.",
+      "technologies": [
+        "Akamai",
+        "Cloudflare",
+        "Verizon Digital Media Services"
+      ],
+      "protocols": ["HTTP/HTTPS", "TCP/IP"]
     },
     {
       "id": 6,
-      "title": "Content Delivery Network (CDN)",
-      "subtitle": "Distributes video content",
-      "description": "Delivers video content to users from edge locations worldwide",
-      "technologies": ["Akamai", "Cloudflare", "Amazon CloudFront"],
+      "title": "Recommendation Engine",
+      "subtitle": "Generates personalized recommendations",
+      "description": "Analyzes user viewing history and generates personalized content recommendations.",
+      "technologies": ["Apache Mahout", "TensorFlow", "PyTorch"],
       "protocols": ["HTTP/HTTPS", "TCP/IP"]
     },
     {
       "id": 7,
-      "title": "Content Encoding and Transcoding",
-      "subtitle": "Prepares video content for delivery",
-      "description": "Encodes and transcodes video content for various devices and platforms",
-      "technologies": ["FFmpeg", "x264", "x265"],
-      "protocols": ["HTTP/HTTPS", "FTP"]
-    },
-    {
-      "id": 8,
-      "title": "Geo-Restriction and Access Control",
-      "subtitle": "Enforces content restrictions",
-      "description": "Applies geo-restrictions and access controls to video content",
-      "technologies": ["IP Geolocation", "Access Control Lists"],
-      "protocols": ["HTTP/HTTPS", "TCP/IP"]
-    },
-    {
-      "id": 9,
-      "title": "Analytics and Logging",
-      "subtitle": "Collects and analyzes user data",
-      "description": "Tracks user behavior, collects metrics, and logs events",
-      "technologies": ["Google Analytics", "Apache Kafka", "Apache Spark"],
-      "protocols": ["HTTP/HTTPS", "TCP/IP"]
-    },
-    {
-      "id": 10,
-      "title": "Search Functionality",
-      "subtitle": "Provides search capabilities",
-      "description": "Indexes and searches video content metadata",
-      "technologies": ["Elasticsearch", "Apache Solr"],
-      "protocols": ["HTTP/HTTPS", "TCP/IP"]
-    },
-    {
-      "id": 11,
-      "title": "Rating System",
-      "subtitle": "Manages user ratings",
-      "description": "Stores and updates user ratings for video content",
-      "technologies": ["Relational Databases (e.g., MySQL)"],
-      "protocols": ["SQL"]
-    },
-    {
-      "id": 12,
-      "title": "Social Features",
-      "subtitle": "Enables social interactions",
-      "description": "Allows users to interact with each other and share content",
-      "technologies": ["Social Media APIs (e.g., Facebook, Twitter)"],
-      "protocols": ["HTTP/HTTPS", "OAuth"]
-    },
-    {
-      "id": 13,
-      "title": "Payment Processing",
-      "subtitle": "Handles subscription payments",
-      "description": "Processes user payments and updates subscription status",
-      "technologies": ["Payment Gateways (e.g., Stripe, PayPal)"],
-      "protocols": ["HTTP/HTTPS", "TCP/IP"]
-    },
-    {
-      "id": 14,
-      "title": "Security",
-      "subtitle": "Ensures system security",
-      "description": "Protects the system from unauthorized access and malicious activity",
-      "technologies": [
-        "Firewalls",
-        "Intrusion Detection Systems",
-        "Encryption"
-      ],
+      "title": "Cache Layer",
+      "subtitle": "Improves performance with caching",
+      "description": "Stores frequently accessed data in memory to reduce database queries and improve performance.",
+      "technologies": ["Redis", "Memcached"],
       "protocols": ["HTTP/HTTPS", "TCP/IP"]
     }
   ],
@@ -130,79 +66,49 @@
       "source": 1,
       "destination": 2,
       "label": "User Request",
-      "description": "User sends request to load balancer"
+      "description": "The user sends a request to the load balancer."
     },
     {
       "source": 2,
       "destination": 3,
-      "label": "Load Balancer",
-      "description": "Load balancer directs request to application server"
+      "label": "Load Balancing",
+      "description": "The load balancer directs the request to an application server."
     },
     {
       "source": 3,
       "destination": 4,
       "label": "Database Query",
-      "description": "Application server queries database"
+      "description": "The application server retrieves data from the database."
     },
     {
       "source": 3,
       "destination": 5,
-      "label": "Caching",
-      "description": "Application server retrieves data from caching layer"
+      "label": "Content Request",
+      "description": "The application server requests video content from the CDN."
+    },
+    {
+      "source": 5,
+      "destination": 1,
+      "label": "Content Delivery",
+      "description": "The CDN delivers video content to the user."
     },
     {
       "source": 3,
       "destination": 6,
-      "label": "Content Delivery",
-      "description": "Application server requests content from CDN"
+      "label": "Recommendation Request",
+      "description": "The application server requests personalized recommendations from the recommendation engine."
     },
     {
       "source": 6,
+      "destination": 3,
+      "label": "Recommendation Response",
+      "description": "The recommendation engine returns personalized recommendations to the application server."
+    },
+    {
+      "source": 3,
       "destination": 7,
-      "label": "Content Encoding",
-      "description": "CDN requests content encoding and transcoding"
-    },
-    {
-      "source": 7,
-      "destination": 8,
-      "label": "Geo-Restriction",
-      "description": "Content encoding and transcoding applies geo-restrictions"
-    },
-    {
-      "source": 3,
-      "destination": 9,
-      "label": "Analytics",
-      "description": "Application server sends analytics data"
-    },
-    {
-      "source": 3,
-      "destination": 10,
-      "label": "Search",
-      "description": "Application server queries search functionality"
-    },
-    {
-      "source": 3,
-      "destination": 11,
-      "label": "Rating System",
-      "description": "Application server updates rating system"
-    },
-    {
-      "source": 3,
-      "destination": 12,
-      "label": "Social Features",
-      "description": "Application server enables social features"
-    },
-    {
-      "source": 3,
-      "destination": 13,
-      "label": "Payment Processing",
-      "description": "Application server processes payment"
-    },
-    {
-      "source": 3,
-      "destination": 14,
-      "label": "Security",
-      "description": "Application server ensures system security"
+      "label": "Cache Query",
+      "description": "The application server checks the cache layer for frequently accessed data."
     }
   ],
   "Flow": [
@@ -211,56 +117,48 @@
       "steps": [
         {
           "action": "User sends request to load balancer",
-          "node": "1"
+          "node": "User (1)"
         },
         {
           "action": "Load balancer directs request to application server",
-          "node": "2"
+          "node": "Load Balancer (2)"
         },
         {
-          "action": "Application server queries database",
-          "node": "3"
+          "action": "Application server retrieves data from database",
+          "node": "Application Server (3)"
         },
         {
-          "action": "Application server retrieves data from caching layer",
-          "node": "5"
+          "action": "Application server requests video content from CDN",
+          "node": "Application Server (3)"
         },
         {
-          "action": "Application server requests content from CDN",
-          "node": "6"
-        },
-        {
-          "action": "CDN requests content encoding and transcoding",
-          "node": "7"
-        },
-        {
-          "action": "Content encoding and transcoding applies geo-restrictions",
-          "node": "8"
-        },
-        {
-          "action": "Application server sends analytics data",
-          "node": "9"
+          "action": "CDN delivers video content to user",
+          "node": "Content Delivery Network (5)"
         }
       ]
     },
     {
-      "scenario": "User Searches for Video Content",
+      "scenario": "User Receives Personalized Recommendations",
       "steps": [
         {
-          "action": "User sends search query to application server",
-          "node": "1"
+          "action": "User interacts with application",
+          "node": "User (1)"
         },
         {
-          "action": "Application server queries search functionality",
-          "node": "10"
+          "action": "Application server requests recommendations from recommendation engine",
+          "node": "Application Server (3)"
         },
         {
-          "action": "Search functionality returns search results",
-          "node": "10"
+          "action": "Recommendation engine generates personalized recommendations",
+          "node": "Recommendation Engine (6)"
         },
         {
-          "action": "Application server updates rating system",
-          "node": "11"
+          "action": "Recommendation engine returns recommendations to application server",
+          "node": "Recommendation Engine (6)"
+        },
+        {
+          "action": "Application server displays recommendations to user",
+          "node": "Application Server (3)"
         }
       ]
     }
