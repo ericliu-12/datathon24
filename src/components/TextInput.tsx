@@ -82,7 +82,13 @@ const TypingPlaceholder = ({ response, setResponse }: SearchProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-row justify-center items-center border border-gray-500 rounded-3xl p-2 bg-white w-[35vw] fixed top-[95%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+      className="flex flex-row justify-center items-center 
+                 border border-gray-500 
+                 rounded-3xl p-2 bg-white 
+                 w-[35vw] 
+                 fixed top-[95%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 
+                 z-50
+                 shadow-xl"
     >
       <input
         type="text"

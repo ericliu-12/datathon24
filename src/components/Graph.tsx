@@ -195,11 +195,12 @@ export default function Graph({
   return (
     <div className="relative flex-grow">
       {/* <Button onClick={() => signIn("google")}></Button> */}
-      <div className="fixed top-4 right-4 flex flex-col gap-2">
+      <Button onClick={addNode} className="h-13 w-13 rounded-full text-3xl fixed top-[92.5%] right-[68%]"> 
+          +
+      </Button>
+
+      <div className="fixed top-4 right-4">
         <AuthButton />
-        <Button onClick={addNode}>
-          <Plus className="mr-2" /> Add Node
-        </Button>
       </div>
 
       {posts.map((post, index) => (

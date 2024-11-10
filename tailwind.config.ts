@@ -9,6 +9,11 @@ export default {
   ],
   theme: {
   	extend: {
+		boxShadow: {
+			lg: '5px 10px 15px -3px rgb(0 0 0 / 0.1), 5px 4px 6px -4px rgb(0 0 0 / 0.1)', // Your custom shadow
+			xl: '10px 15px 25px -5px rgb(0 0 0 / 0.1), 0 8px 10px -6px rgb(0 0 0 / 0.1)'
+		},
+
   		colors: {
   			background: 'hsl(var(--background))',
   			foreground: 'hsl(var(--foreground))',
