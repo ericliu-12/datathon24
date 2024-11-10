@@ -43,7 +43,8 @@ export default function Graph({
   connections,
   setConnections,
   deleteNode,
-}: GraphProps) {
+  hoveredNode,
+}: GraphProps & { hoveredNode: string | null }) {
   const [openDialogs, setOpenDialogs] = useState(
     new Array(posts.length).fill(false)
   );
@@ -197,7 +198,10 @@ export default function Graph({
     <div className="relative flex-grow">
       {/* <Button onClick={() => signIn("google")}></Button> */}
       <Button
-        onClick={addNode}
+        onClick={() => {
+          addNode();
+          console.log(posts);
+        }}
         className="h-13 w-13 rounded-full text-3xl fixed top-[92.5%] right-[68%]"
       >
         +
@@ -227,6 +231,7 @@ export default function Graph({
                 nodeRefs.current[index] = el;
               }}
               handleDelete={deleteNode}
+              forceHover={post.id + 1 == hoveredNode}
             />
           </div>
           <DialogContent>

@@ -3,6 +3,9 @@
 import React, { useState, useEffect } from "react";
 import Graph, { Connection, Node } from "@/components/Graph";
 import TypingPlaceholder from "@/components/TextInput";
+import VerticalCarousel from "@/components/VerticalCarousel";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type DataFlow = {
   scenario?: string;
@@ -16,6 +19,13 @@ type ResponseType = {
 };
 
 export default function Home() {
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [showCarousel, setShowCarousel] = useState<boolean>(false);
+
+  const handleActionHover = (node: string | null) => {
+    setHoveredNode(node);
+  };
+
   const [response, setResponse] = useState<ResponseType>();
   const [nodes, setNodes] = useState<Node[]>([
     {
@@ -29,6 +39,11 @@ export default function Home() {
 
   const handleDeleteNode = (id: number) => {
     setNodes(nodes.filter((node) => node.id !== id));
+  };
+
+  const handleToggleCarousel = (isChecked: boolean) => {
+    setShowCarousel(isChecked);
+    setHoveredNode(isChecked ? null : "-1"); // Reset hoveredNode to -1 when switch is off
   };
 
   useEffect(() => {
@@ -64,7 +79,17 @@ export default function Home() {
           connections={connections}
           setConnections={setConnections}
           deleteNode={handleDeleteNode}
+          hoveredNode={hoveredNode}
         />
+      </div>
+      {showCarousel && (
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
+          <VerticalCarousel onActionHover={handleActionHover} />
+        </div>
+      )}
+      <div className="absolute bottom-8 right-8 flex items-center gap-2">
+        <Label htmlFor="airplane-mode">Enable Workflow</Label>
+        <Switch checked={showCarousel} onCheckedChange={handleToggleCarousel} />
       </div>
     </div>
   );
