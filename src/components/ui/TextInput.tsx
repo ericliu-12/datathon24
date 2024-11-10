@@ -86,7 +86,7 @@ const TypingPlaceholder = () => {
         className="flex-grow p-2 border-none outline-none"
       />
       <button type="submit" className="ml-2 p-2 bg-blue-300 text-white rounded">
-        Search
+        Enter
       </button>
     </form>
   );
