@@ -61,7 +61,7 @@ node_prompt = ChatPromptTemplate.from_messages(
                         scenario: string;
                         steps: {{ action: string; node: string }}[];
                     }};
-               Ensure responses are organized, technical, and optimized for an audience with engineering expertise. Make sure the answer you return is only in JSON format."""
+               Ensure responses are organized, technical, and optimized for an audience with engineering expertise. Make sure when you set the node value in flow, you set it to just the number. Make sure the answer you return is only in JSON format."""
         ),
         ("user", "Please generate a system design breakdown.")
     ]

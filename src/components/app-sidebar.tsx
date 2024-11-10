@@ -39,7 +39,7 @@ export function AppSidebar({ items, setNodes, setConnections }: SidebarProps) {
   };
 
   return (
-    <Sidebar>
+    <Sidebar className="w-[12vw]">
       <SidebarContent>
         <SidebarGroup>
           <SidebarGroupLabel>Application</SidebarGroupLabel>

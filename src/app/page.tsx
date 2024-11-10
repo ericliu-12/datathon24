@@ -5,6 +5,9 @@ import Graph, { Connection, Node } from "@/components/Graph";
 import TypingPlaceholder from "@/components/TextInput";
 import { useSession } from "next-auth/react";
 import { AppSidebar } from "@/components/app-sidebar";
+import VerticalCarousel from "@/components/VerticalCarousel";
+import { Switch } from "@/components/ui/switch";
+import { Label } from "@/components/ui/label";
 
 type DataFlow = {
   scenario?: string;
@@ -20,6 +23,15 @@ type ResponseType = {
 
 export default function Home() {
   const { data: session } = useSession();
+  
+  const [hoveredNode, setHoveredNode] = useState<string | null>(null);
+  const [showCarousel, setShowCarousel] = useState<boolean>(false);
+  const [actions, setActions] = useState([]);
+
+  const handleActionHover = (node: string | null) => {
+    setHoveredNode(node);
+  };
+
   const [response, setResponse] = useState<ResponseType>();
   const [nodes, setNodes] = useState<Node[]>([]);
   const [connections, setConnections] = useState<Connection[]>([]);
@@ -27,6 +39,12 @@ export default function Home() {
 
   const handleDeleteNode = (id: number) => {
     setNodes(nodes.filter((node) => node.id !== id));
+  };
+
+  const handleToggleCarousel = (isChecked: boolean) => {
+    console.log(nodes);
+    setShowCarousel(isChecked);
+    setHoveredNode(isChecked ? null : "-1"); // Reset hoveredNode to -1 when switch is off
   };
 
   useEffect(() => {
@@ -68,6 +86,12 @@ export default function Home() {
         .catch((err) => {
           console.error("Error updating data:", err);
         });
+
+      const newSteps = response["Flow"].map((flow) => ({
+        scenario: flow.scenario,
+        steps: flow.steps,
+      }));
+      setActions(newSteps[0].steps);
     }
   }, [response]);
 
@@ -89,7 +113,7 @@ export default function Home() {
   }, [session]);
 
   return (
-    <>
+    <div>
       <AppSidebar
         items={graphs}
         setNodes={setNodes}
@@ -107,6 +131,18 @@ export default function Home() {
           />
         </div>
       </div>
-    </>
+      {showCarousel && (
+        <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-1/10 max-w-xs">
+          <VerticalCarousel
+            onActionHover={handleActionHover}
+            actions={actions}
+          />
+        </div>
+      )}
+      <div className="absolute bottom-8 right-8 flex items-center gap-2">
+        <Label htmlFor="airplane-mode">enable workflow</Label>
+        <Switch checked={showCarousel} onCheckedChange={handleToggleCarousel} />
+      </div>
+    </div>
   );
 }

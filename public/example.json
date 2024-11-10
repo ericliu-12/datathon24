@@ -112,23 +112,23 @@
       "steps": [
         {
           "action": "User sends request to load balancer",
-          "node": "User (1)"
+          "node": "1"
         },
         {
           "action": "Load balancer directs request to application server",
-          "node": "Load Balancer (2)"
+          "node": "2"
         },
         {
           "action": "Application server retrieves data from database",
-          "node": "Application Server (3)"
+          "node": "3"
         },
         {
           "action": "Application server requests video content from CDN",
-          "node": "Application Server (3)"
+          "node": "3"
         },
         {
           "action": "CDN delivers video content to user",
-          "node": "Content Delivery Network (5)"
+          "node": "5"
         }
       ]
     },
