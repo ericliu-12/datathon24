@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { Input } from "./ui/input";
 
 const placeholderTexts = [
   "show me how to design Netflix",
@@ -81,7 +82,7 @@ const TypingPlaceholder = ({ response, setResponse }: SearchProps) => {
   return (
     <form
       onSubmit={handleSubmit}
-      className="flex flex-row justify-center items-center border border-black rounded-3xl p-2 bg-white shadow-lg w-[35vw] fixed top-[95%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
+      className="flex flex-row justify-center items-center border border-gray-500 rounded-3xl p-2 bg-white w-[35vw] fixed top-[95%] left-1/2 transform -translate-x-1/2 -translate-y-1/2 z-50"
     >
       <input
         type="text"
@@ -90,7 +91,10 @@ const TypingPlaceholder = ({ response, setResponse }: SearchProps) => {
         onChange={(e) => setInputValue(e.target.value)}
         className="flex-grow pl-3 text-lg border-none outline-none h-6 leading-none tracking-normal"
       />
-      <button type="submit" className="ml-2 p-2 bg-lime-500 text-white rounded-full h-full">
+      <button
+        type="submit"
+        className="ml-2 p-2 bg-lime-500 text-white rounded-full h-full"
+      >
         <img src="submit_arrow.svg" alt="submit_arrow" />
       </button>
     </form>

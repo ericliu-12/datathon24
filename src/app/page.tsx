@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 import Graph, { Connection, Node } from "@/components/Graph";
-import TypingPlaceholder from "@/components/ui/TextInput";
+import TypingPlaceholder from "@/components/TextInput";
 
 type DataFlow = {
   scenario?: string;
