@@ -38,6 +38,7 @@ node_prompt = ChatPromptTemplate.from_messages(
             "system",
             """You are an expert in system design and architecture. Given a request to design a complex system based on the following information:
                One of the nodes should be the user.
+               If there is a connection that goes both ways, only add it to connections once.
                Project Name: {project_name}
                Keywords: {keywords}
                Do not add any intro or outro statements. Provide a technical breakdown in the following structure: 
