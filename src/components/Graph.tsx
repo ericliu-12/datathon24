@@ -133,7 +133,6 @@ export default function Graph() {
   return (
     <div className="relative flex-grow">
       {/* <Button onClick={() => signIn("google")}></Button> */}
-      <AuthButton />
       <Button onClick={addNode} className="fixed top-24 right-4">
         <Plus className="mr-2" /> Add Node
       </Button>
